@@ -3,12 +3,15 @@ FROM python:3.11-slim AS builder
 # install gosu
 RUN apt-get update && apt-get install -y --no-install-recommends gosu curl ca-certificates
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN curl -sL https://github.com/dmtcp/dmtcp/archive/refs/tags/3.2.0.tar.gz -o /tmp/3.2.0.tar.gz
 
 ENV PATH="/root/.local/bin:$PATH"
 RUN gosu --version
 
 FROM python:3.11-slim
 
+# copy dmtcp
+COPY --from=builder /tmp/3.2.0.tar.gz /tmp/
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
@@ -24,11 +27,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # install DMTCP
-COPY ./docker/3.2.0.tar.gz /tmp/
 RUN tar -xzf /tmp/3.2.0.tar.gz -C /tmp/ && \
     cd /tmp/dmtcp-3.2.0 && \
     ./configure --prefix=/usr/local && \
     make && make install
+RUN rm -rf /tmp/dmtcp-3.2.0 /tmp/3.2.0.tar.gz
 
 RUN uv pip install nanoid --system --compile-bytecode
 
