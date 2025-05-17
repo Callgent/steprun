@@ -95,7 +95,9 @@ COPY ./scripts /app/scripts
 
 COPY ./pyproject.toml ./uv.lock ./alembic.ini /app/
 
-COPY ./app /app/app
+COPY ./app /app/app 
+COPY ./.env.prod /app/.env
+RUN chown root:root /app && chmod 700 /app
 
 # Sync the project
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
@@ -103,5 +105,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 EXPOSE 8000
+
+USER root
 
 CMD ["sh", "-c", "dmtcp_coordinator --daemon && fastapi run --workers 4 app/main.py"]
