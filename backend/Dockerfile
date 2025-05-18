@@ -48,9 +48,10 @@ RUN mkdir -p /sandboxes/snapshots /sandboxes/shared_libs \
 
 ENV PYTHONNOUSERSITE=1
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV SANDBOX_PREFIX=/sandboxes/sandbox_
-ENV SHARED_LIBS_PATH=/sandboxes/shared_libs
-ENV SNAPSHOT_DIR=/sandboxes/snapshots
+ENV SANDBOX_ROOT=/sandboxes/
+ENV SHARED_LIBS_PATH=shared_libs
+ENV SNAPSHOT_DIR=snapshots
+ENV SANDBOX_PREFIX=sandbox_
 
 # Install global shared dependencies using uv pip
 # COPY requirements.txt /tmp/requirements.txt

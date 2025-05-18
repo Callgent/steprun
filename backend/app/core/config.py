@@ -14,6 +14,11 @@ from pydantic import (
 from pydantic_core import MultiHostUrl
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from typing_extensions import Self
+from dotenv import load_dotenv
+
+
+_env_file = "./.env"
+load_dotenv(_env_file)
 
 
 def parse_cors(v: Any) -> list[str] | str:
@@ -27,7 +32,7 @@ def parse_cors(v: Any) -> list[str] | str:
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         # Use top level .env file (in ./backend/)
-        env_file="./.env",
+        env_file=_env_file,
         env_ignore_empty=True,
         extra="ignore",
     )
@@ -38,9 +43,9 @@ class Settings(BaseSettings):
     FRONTEND_HOST: str = "http://localhost:5173"
     ENVIRONMENT: Literal["local", "staging", "production"] = "local"
 
-    BACKEND_CORS_ORIGINS: Annotated[
-        list[AnyUrl] | str, BeforeValidator(parse_cors)
-    ] = []
+    BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)] = (
+        []
+    )
 
     @computed_field  # type: ignore[prop-decorator]
     @property

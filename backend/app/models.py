@@ -167,7 +167,7 @@ class UserSessionBase(SQLModel):
     session_id: str = Field(unique=True, index=True)
     created_at: datetime = Field(
         default_factory=lambda: datetime.now(timezone.utc),
-        index=True,  # 添加索引
+        index=True,
     )
     expires_at: Optional[datetime] = Field(default=None)
     is_active: bool = Field(default=True)

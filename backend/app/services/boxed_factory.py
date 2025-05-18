@@ -11,18 +11,17 @@ from nanoid import generate
 
 from .boxed_process import SANDBOX_ROOT, SANDBOX_PREFIX, BoxedProcess
 
-SNAPSHOT_DIR = SANDBOX_ROOT + os.environ.get('SNAPSHOT_DIR', '/snapshots')
-SANDBOX_STRUCT = ['work', 'tmp', 'lib', 'log']
+SNAPSHOT_DIR = SANDBOX_ROOT + os.getenv("SNAPSHOT_DIR", "snapshots")
+SANDBOX_STRUCT = ["work", "tmp", "lib", "log"]
 
 logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
 )
 logger = logging.getLogger(__name__)
 
 
 class SessionFactory:
-    def __init__(self, sandbox_manager: 'BoxedManager'):
+    def __init__(self, sandbox_manager: "BoxedManager"):
         self.session_map: Dict[str, str] = {}  # TODO persistence
         self.sandbox_manager = sandbox_manager
 
@@ -30,24 +29,27 @@ class SessionFactory:
         session_id = generate()
         box_id = await self.sandbox_manager.acquire_box()
         self.session_map[session_id] = box_id
+        logger.info(
+            f"Created session {session_id} with box {self.session_map[session_id]}"
+        )
         return session_id, box_id
 
     async def snapshot_session(self, session_id: str) -> str:
         box_id = self.session_map.get(session_id)
         if not box_id:
-            raise KeyError(f"Session {session_id} 不存在")
+            raise KeyError(f"Session {session_id} not found for snapshot")
         return await self.sandbox_manager.snapshot_box(box_id)
 
     async def restore_session(self, session_id: str, snapshot_id: str) -> None:
         box_id = self.session_map.get(session_id)
         if not box_id:
-            raise KeyError(f"Session {session_id} 不存在")
+            raise KeyError(f"Session {session_id} not found for restore")
         await self.sandbox_manager.restore_box(box_id, snapshot_id)
 
     async def destroy_session(self, session_id: str) -> None:
         box_id = self.session_map.pop(session_id, None)
         if not box_id:
-            raise KeyError(f"Session {session_id} 不存在")
+            raise KeyError(f"Session {session_id} not found for cleanup")
         await self.sandbox_manager.destroy_box(box_id)
 
 
@@ -70,7 +72,7 @@ class BoxedManager:
             box_id = await self.start_box()
             await self._available.put(box_id)
         except Exception as e:
-            logger.error("Prewarm failed", exc_info=1)
+            logger.error("Prewarm failed", exc_info=e)
 
     async def acquire_box(self) -> str:
         try:
@@ -102,16 +104,26 @@ class BoxedManager:
             await loop.run_in_executor(None, path.mkdir, True, True)
             await loop.run_in_executor(None, os.chmod, path, 0o2770)
         # 非阻塞执行chown命令
-        await loop.run_in_executor(None, subprocess.run, ['chown', '-R', 'sandboxed:sandboxed', str(box_path)])
+        await loop.run_in_executor(
+            None, subprocess.run, ["chown", "-R", "sandboxed:sandboxed", str(box_path)]
+        )
 
     async def install_packages(self, box_id: str, packages: list[str]) -> None:
-        pattern = re.compile(r'^[a-zA-Z0-9_.-]+$')
+        pattern = re.compile(r"^[a-zA-Z0-9_.-]+$")
         for pkg in packages:
             if not pattern.match(pkg):
                 raise ValueError(f"Invalid package name: {pkg}")
         lib_path = f"{SANDBOX_PREFIX}{box_id}/lib"
-        cmd = ["gosu", "sandboxed", "uv", "pip", "install",
-               "--no-deps", f"--target={lib_path}", *packages]
+        cmd = [
+            "gosu",
+            "sandboxed",
+            "uv",
+            "pip",
+            "install",
+            "--no-deps",
+            f"--target={lib_path}",
+            *packages,
+        ]
         # 非阻塞安装
         loop = asyncio.get_event_loop()
         await loop.run_in_executor(None, subprocess.check_call, cmd)

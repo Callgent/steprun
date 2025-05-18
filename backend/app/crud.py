@@ -83,6 +83,5 @@ def deactivate_user_session(*, session: Session, session_id: str, user_id: uuid.
 def get_user_sessions(*, session: Session, user_id: uuid.UUID, skip: int = 0, limit: int = 100) -> list[UserSession]:
     statement = select(UserSession).where(
         UserSession.user_id == user_id,
-        order_by=UserSession.created_at.desc()
-    ).offset(skip).limit(limit)
+    ).order_by(UserSession.created_at.desc()).offset(skip).limit(limit)
     return session.exec(statement).all()
