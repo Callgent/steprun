@@ -96,7 +96,6 @@ COPY ./scripts /app/scripts
 COPY ./pyproject.toml ./uv.lock ./alembic.ini /app/
 
 COPY ./app /app/app 
-COPY ./.env.prod /app/.env
 RUN chown root:root /app && chmod 700 /app
 
 # Sync the project
