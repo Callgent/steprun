@@ -6,8 +6,10 @@ from typing import Optional
 
 from nanoid import generate
 
-SANDBOX_PREFIX = os.environ.get('SANDBOX_PREFIX', '/sandboxes/sandbox_')
-SHARED_LIBS_PATH = os.environ.get('SHARED_LIBS_PATH', '/sandboxes/shared_libs')
+SANDBOX_ROOT = os.environ.get('SANDBOX_ROOT', '/sandboxes')
+
+SANDBOX_PREFIX = SANDBOX_ROOT + os.environ.get('SANDBOX_PREFIX', '/sandbox_')
+SHARED_LIBS_PATH = SANDBOX_ROOT + os.environ.get('SHARED_LIBS_PATH', '/shared_libs')
 
 logging.basicConfig(
     level=logging.INFO,

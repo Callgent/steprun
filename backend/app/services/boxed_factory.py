@@ -9,9 +9,9 @@ from typing import Dict
 
 from nanoid import generate
 
-from .boxed_process import SANDBOX_PREFIX, BoxedProcess
+from .boxed_process import SANDBOX_ROOT, SANDBOX_PREFIX, BoxedProcess
 
-SNAPSHOT_DIR = os.environ.get('SNAPSHOT_DIR', '/sandboxes/snapshots')
+SNAPSHOT_DIR = SANDBOX_ROOT + os.environ.get('SNAPSHOT_DIR', '/snapshots')
 SANDBOX_STRUCT = ['work', 'tmp', 'lib', 'log']
 
 logging.basicConfig(
