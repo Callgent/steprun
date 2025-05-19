@@ -1,0 +1,19 @@
+services:
+  app:
+    build: .
+    env_file:
+      - ${APP_ENV_FILE:-.env.prod}
+    container_name: api.steprun.ai
+    user: root
+    volumes:
+      - sandboxes:/sandboxes
+    ports:
+      - "8000:8000"
+
+volumes:
+  sandboxes:
+    # driver: local
+    # driver_opts:
+    #   o: bind
+    #   type: none
+    #   device: /mydata/steprun/sandboxes

@@ -3,12 +3,15 @@ FROM python:3.11-slim AS builder
 # install gosu
 RUN apt-get update && apt-get install -y --no-install-recommends gosu curl ca-certificates
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+RUN curl -sL https://github.com/dmtcp/dmtcp/archive/refs/tags/3.2.0.tar.gz -o /tmp/3.2.0.tar.gz
 
 ENV PATH="/root/.local/bin:$PATH"
 RUN gosu --version
 
 FROM python:3.11-slim
 
+# copy dmtcp
+COPY --from=builder /tmp/3.2.0.tar.gz /tmp/
 # Install uv
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#installing-uv
 COPY --from=ghcr.io/astral-sh/uv:0.5.11 /uv /uvx /bin/
@@ -24,11 +27,11 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/*
 
 # install DMTCP
-COPY ./docker/3.2.0.tar.gz /tmp/
 RUN tar -xzf /tmp/3.2.0.tar.gz -C /tmp/ && \
     cd /tmp/dmtcp-3.2.0 && \
     ./configure --prefix=/usr/local && \
     make && make install
+RUN rm -rf /tmp/dmtcp-3.2.0 /tmp/3.2.0.tar.gz
 
 RUN uv pip install nanoid --system --compile-bytecode
 
@@ -45,9 +48,10 @@ RUN mkdir -p /sandboxes/snapshots /sandboxes/shared_libs \
 
 ENV PYTHONNOUSERSITE=1
 ENV PYTHONDONTWRITEBYTECODE=1
-ENV SANDBOX_PREFIX=/sandboxes/sandbox_
-ENV SHARED_LIBS_PATH=/sandboxes/shared_libs
-ENV SNAPSHOT_DIR=/sandboxes/snapshots
+ENV SANDBOX_ROOT=/sandboxes/
+ENV SHARED_LIBS_PATH=shared_libs
+ENV SNAPSHOT_DIR=snapshots
+ENV SANDBOX_PREFIX=sandbox_
 
 # Install global shared dependencies using uv pip
 # COPY requirements.txt /tmp/requirements.txt
@@ -92,7 +96,8 @@ COPY ./scripts /app/scripts
 
 COPY ./pyproject.toml ./uv.lock ./alembic.ini /app/
 
-COPY ./app /app/app
+COPY ./app /app/app 
+RUN chown root:root /app && chmod 700 /app
 
 # Sync the project
 # Ref: https://docs.astral.sh/uv/guides/integration/docker/#intermediate-layers
@@ -100,5 +105,7 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync
 
 EXPOSE 8000
+
+USER root
 
 CMD ["sh", "-c", "dmtcp_coordinator --daemon && fastapi run --workers 4 app/main.py"]

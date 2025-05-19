@@ -8,8 +8,13 @@ from app.api.deps import (
     CurrentUser,
     SessionDep,
 )
-from app.crud import create_user_session, deactivate_user_session, get_user_session
-from app.models import UserSessionCreate, UserSessionPublic
+from app.crud import (
+    create_user_session,
+    deactivate_user_session,
+    get_user_session,
+    get_user_sessions,
+)
+from app.models import UserSession, UserSessionCreate, UserSessionPublic
 
 
 router = APIRouter(prefix="/sessions", tags=["Boxed"])
@@ -19,6 +24,7 @@ boxed_service = BoxedService(prewarm_count=5)
 # ==========================
 # Request / Response Models
 # ==========================
+
 
 class CodeExecRequest(BaseModel):
     code: str = Field(..., description="Python 代码")
@@ -48,6 +54,7 @@ class SessionResponse(BaseModel):
 # Session APIs
 # ==========================
 
+
 @router.post("", response_model=SessionResponse)
 async def create_session(session: SessionDep, current_user: CurrentUser) -> Any:
     """
@@ -56,19 +63,17 @@ async def create_session(session: SessionDep, current_user: CurrentUser) -> Any:
     session_id = await boxed_service.create_session()
 
     # 创建用户会话记录
-    session_create = UserSessionCreate(
-        session_id=session_id,
-        user_id=current_user.id
-    )
+    session_create = UserSessionCreate(session_id=session_id, user_id=current_user.id)
     create_user_session(session=session, session_create=session_create)
 
     return SessionResponse(session_id=session_id)
+
 
 # boxed.py
 
 
 @router.get("", response_model=list[UserSessionPublic])
-def get_user_sessions(
+def get_my_sessions(
     session: SessionDep,
     current_user: CurrentUser,
     skip: int = 0,
@@ -85,30 +90,34 @@ def get_user_sessions(
     )
 
 
-def _check_user_session(session: SessionDep, session_id: str,
-                        current_user: CurrentUser) -> None:
+def _check_user_session(
+    session: SessionDep, session_id: str, current_user: CurrentUser
+) -> UserSession:
     """
     检查会话是否处于活跃状态。
     """
-    user_session = get_user_session(session=session, session_id=session_id,
-                                    user_id=current_user.id)
+    user_session = get_user_session(
+        session=session, session_id=session_id, user_id=current_user.id
+    )
     if user_session is None:
         raise HTTPException(status_code=404, detail="Session not found")
     return user_session
 
 
 @router.delete("/{session_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def destroy_session(session_id: str, session: SessionDep,
-                          current_user: CurrentUser) -> Response:
+async def destroy_session(
+    session_id: str, session: SessionDep, current_user: CurrentUser
+) -> Response:
     """
     销毁沙箱会话。
     """
     _check_user_session(session, session_id, current_user)
     try:
-        await boxed_service.destroy(session_id)
         # 标记会话为非活跃状态
         deactivate_user_session(
-            session=session, session_id=session_id, user_id=current_user.id)
+            session=session, session_id=session_id, user_id=current_user.id
+        )
+        await boxed_service.destroy(session_id)
     except KeyError:
         raise HTTPException(status_code=404, detail="Session not found")
     return Response(status_code=204)
@@ -118,9 +127,14 @@ async def destroy_session(session_id: str, session: SessionDep,
 # Code Execution API
 # ==========================
 
+
 @router.post("/{session_id}/exec", response_model=CodeExecResponse)
-async def exec_code(session_id: str, request: CodeExecRequest,
-                    session: SessionDep, current_user: CurrentUser) -> Any:
+async def exec_code(
+    session_id: str,
+    request: CodeExecRequest,
+    session: SessionDep,
+    current_user: CurrentUser,
+) -> Any:
     """
     执行代码。
     """
@@ -136,9 +150,14 @@ async def exec_code(session_id: str, request: CodeExecRequest,
 # Package Installation
 # ==========================
 
+
 @router.post("/{session_id}/packages", status_code=status.HTTP_204_NO_CONTENT)
-async def install_packages(session_id: str, request: PackageInstallRequest,
-                           session: SessionDep, current_user: CurrentUser) -> Response:
+async def install_packages(
+    session_id: str,
+    request: PackageInstallRequest,
+    session: SessionDep,
+    current_user: CurrentUser,
+) -> Response:
     """
     安装 Python 包。
     """
@@ -154,9 +173,11 @@ async def install_packages(session_id: str, request: PackageInstallRequest,
 # Hibernate (Snapshot + Kill)
 # ==========================
 
+
 @router.post("/{session_id}/hibernate", response_model=SnapshotResponse)
-async def hibernate_session(session_id: str,
-                            session: SessionDep, current_user: CurrentUser) -> Any:
+async def hibernate_session(
+    session_id: str, session: SessionDep, current_user: CurrentUser
+) -> Any:
     """
     休眠会话（保存快照并终止进程）。
     """
@@ -172,9 +193,14 @@ async def hibernate_session(session_id: str,
 # Restore Snapshot
 # ==========================
 
+
 @router.post("/{session_id}/restore", status_code=status.HTTP_204_NO_CONTENT)
-async def restore_session(session_id: str, request: SnapshotRestoreRequest,
-                          session: SessionDep, current_user: CurrentUser) -> Response:
+async def restore_session(
+    session_id: str,
+    request: SnapshotRestoreRequest,
+    session: SessionDep,
+    current_user: CurrentUser,
+) -> Response:
     """
     从快照恢复会话。
     """

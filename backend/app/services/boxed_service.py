@@ -48,5 +48,5 @@ class BoxedService:
     def _get_box_id(self, session_id: str) -> str:
         box_id = self.factory.session_map.get(session_id)
         if not box_id:
-            raise KeyError(f"Session {session_id} 不存在")
+            raise KeyError(f"Session {session_id} not found")
         return box_id
