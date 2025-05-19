@@ -108,4 +108,4 @@ EXPOSE 8000
 
 USER root
 
-CMD ["sh", "-c", "dmtcp_coordinator --daemon && fastapi run --workers 4 app/main.py"]
+CMD ["sh", "-c", "dmtcp_coordinator --daemon && fastapi run --workers 1 app/main.py"]

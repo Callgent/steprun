@@ -5,12 +5,16 @@ class BoxedService:
     def __init__(self, prewarm_count: int = 5):
         self.manager = BoxedManager(prewarm_count=prewarm_count)
         self.factory = SessionFactory(self.manager)
+        
+    async def init(self):
+        await self.manager.init()
+        return self
 
     async def create_session(self) -> str:
         session_id, _ = await self.factory.create_session()
         return session_id
 
-    async def exec_code(self, session_id: str, code: str) -> str:
+    async def exec_code(self, session_id: str, code: str) -> tuple[str, str]:
         box_id = self._get_box_id(session_id)
         proc = self.manager.box_registry.get(box_id)
         if not proc:
@@ -48,5 +52,5 @@ class BoxedService:
     def _get_box_id(self, session_id: str) -> str:
         box_id = self.factory.session_map.get(session_id)
         if not box_id:
-            raise KeyError(f"Session {session_id} not found")
+            raise KeyError(f"Session {session_id} not found in session_map")
         return box_id
