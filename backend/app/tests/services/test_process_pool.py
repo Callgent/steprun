@@ -2,30 +2,28 @@ import uuid
 from unittest.mock import patch
 
 import pytest
-from app.services.process_pool import ProcessPool
+from app.services.boxed_service import BoxedService
 
 
-class TestProcessPool:
+class TestBoxedService:
     @pytest.fixture
-    def process_pool(self):
-        return ProcessPool()
+    def process_service(self) -> BoxedService:
+        return BoxedService()
 
-    @patch('app.services.session_process.SessionProcess.execute_code')
-    async def test_execute(self, mock_execute_code, process_pool):
+    @patch("app.services.boxed_service.BoxedService.execute_code")
+    async def test_execute(self, mock_execute_code, process_service: BoxedService):
         mock_execute_code.return_value = "exec_id"
-        session_id = str(uuid.uuid4())
+        box_id = str(uuid.uuid4())
         code = "print('Hello, World!')"
-        result = await process_pool.execute(code, session_id)
+        result = await process_service.exec_code(code, box_id)
         assert result == {
             "execution_id": "exec_id",
             "status": "pending",
-            "result": None
+            "result": None,
         }
-        assert session_id in process_pool.sessions
 
-    async def test_remove(self, process_pool):
-        session_id = str(uuid.uuid4())
-        process_pool._create_session(session_id)
-        assert session_id in process_pool.sessions
-        process_pool.remove(session_id)
-        assert session_id not in process_pool.sessions
+    async def test_remove(self, process_service: BoxedService):
+        box_id = await process_service.create_session()
+        assert box_id in process_service.manager.proc_registry
+        await process_service.destroy(box_id)
+        assert box_id not in process_service.manager.proc_registry

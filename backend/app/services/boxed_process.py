@@ -1,4 +1,6 @@
 import asyncio
+import errno
+import fcntl
 import logging
 import os
 import re
@@ -25,12 +27,12 @@ SHARED_LIBS_PATH = SANDBOX_ROOT + os.getenv("SHARED_LIBS_PATH", "shared_libs")
 class BoxedProcess:
     def __init__(self, box_id: str):
         self.box_id = box_id
+        # TODO: put a sub-process lock file in the sandbox. in case sub-process crash, we
         self.process: Optional[asyncio.subprocess.Process] = None
         self._lock = asyncio.Lock()
         self._timeout = 5
         self._monitor_task = None
-        self._terminated = False
-        self._health_check_interval = 30  # 每30秒检查一次进程健康状态
+        self._health_check_interval = 10  # 每10秒检查一次进程健康状态
 
     async def __aenter__(self):
         """支持异步上下文管理器协议"""
@@ -43,7 +45,7 @@ class BoxedProcess:
 
     def __del__(self):
         """确保对象被垃圾回收时进程也被终止"""
-        if self.process and not self._terminated:
+        if self.process:
             # 创建一个新的事件循环来运行同步代码
             try:
                 loop = asyncio.get_event_loop()
@@ -55,13 +57,14 @@ class BoxedProcess:
                 # 如果无法获取事件循环，直接终止进程
                 if hasattr(self.process, "kill"):
                     self.process.kill()
+            finally:
+                self._clear()
 
     async def start(self) -> None:
         """启动沙箱进程并设置监控"""
         async with self._lock:
             if self.is_running:
                 return
-            self._terminated = False
 
             sandbox_path = f"{SANDBOX_PREFIX}{self.box_id}"
             env = {
@@ -303,8 +306,6 @@ class BoxedProcess:
             if not self.process:
                 return
 
-            self._terminated = True
-
             # 取消监控任务
             if self._monitor_task and not self._monitor_task.done():
                 self._monitor_task.cancel()
@@ -342,8 +343,9 @@ class BoxedProcess:
                         self.process.kill()
                     except:
                         pass
-            logger.info("Box %s stopped", self.box_id)
-            self.process = None
+            finally:
+                logger.info("Box %s stopped", self.box_id)
+                self._clear()
 
     @property
     def is_running(self) -> bool:
@@ -351,48 +353,71 @@ class BoxedProcess:
         return self.process is not None and self.process.returncode is None
 
     async def _monitor_process(self):
-        """监控进程状态的后台任务"""
+        """check process lock_file"""
         try:
+            await asyncio.sleep(5)
             while self.is_running and self.process:
-                # 等待进程终止或健康检查间隔
                 try:
-                    await asyncio.wait_for(
-                        self.process.wait(), timeout=self._health_check_interval
-                    )
-                    # 如果到达这里，说明进程已终止
-                    logger.warning(
-                        "Box %s process terminated unexpectedly with code %s",
+                    locked = self._is_process_file_locked()
+                    logger.debug(
+                        "Box %s process lock file check: %s",
                         self.box_id,
-                        self.process.returncode,
+                        "locked" if locked else "unlocked",
                     )
-                    self.process = None
-                    break
-                except asyncio.TimeoutError:
-                    # 超时意味着进程仍在运行，执行健康检查
-                    if not await self._health_check():
+                    if not locked:  # process terminated
                         logger.warning(
-                            "Box %s health check failed, restarting", self.box_id
+                            "Box %s process terminated unexpectedly with code %s",
+                            self.box_id,
+                            self.process.returncode,
                         )
-                        # await self._restart_process()
+                        self._clear()
+                        break
+                except Exception as e:
+                    logger.error(
+                        "Box %s error checking process lock file: %s",
+                        self.box_id,
+                        str(e),
+                    )
+                await asyncio.sleep(self._health_check_interval)
 
         except Exception as e:
             logger.error("Box %s monitor error: %s", self.box_id, str(e), exc_info=True)
         finally:
             self._monitor_task = None
 
-    async def _health_check(self) -> bool:
-        """使用已有的execute方法进行健康检查"""
-        try:
-            if not self.is_running:
-                return False
-
-            # 使用非侵入性命令检查进程是否响应
-            # 这个表达式不会产生输出，但会被解释器处理
-            # 我们使用一个带超时的短命令，确保不干扰实际执行
-            return await self._quick_execute("None", timeout=3.0)
-        except Exception as e:
-            logger.warning("Box %s health check failed: %s", self.box_id, str(e))
+    def _is_process_file_locked(self):
+        """
+        check process lock file: $TMPDIR/_l0ckfi1e
+        """
+        lockfile_path = os.path.join(
+            f"{SANDBOX_PREFIX}{self.box_id}", "tmp", "_l0ckfi1e"
+        )
+        if not os.path.exists(lockfile_path):
+            logger.warning(
+                "Lockfile %s does not exist, process may have terminated",
+                lockfile_path,
+            )
             return False
+
+        try:
+            with open(lockfile_path, "r") as f:
+                # non-blocking lock check
+                fcntl.flock(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+                # successfully acquired the lock
+                logger.info(
+                    "Lockfile %s is not locked, process is running", lockfile_path
+                )
+                return False
+        except OSError as e:
+            if e.errno == errno.EAGAIN:
+                # file is already locked by another process
+                return True
+            else:
+                raise
+            
+    def _clear(self):
+        self.process = None
+        self._monitor_task = None
 
     # async def _restart_process(self):
     #     """尝试重启进程"""
