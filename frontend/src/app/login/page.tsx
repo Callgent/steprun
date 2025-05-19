@@ -13,7 +13,7 @@ import { useAuthStore } from "@/lib/store/auth-store"
 
 export default function LoginPage() {
   const router = useRouter()
-  const { login, isLoading, error, clearError } = useAuthStore()
+  const { login, userInfo, isLoading, error, clearError } = useAuthStore()
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -24,6 +24,7 @@ export default function LoginPage() {
     clearError()
 
     const success = await login(email, password)
+    await userInfo()
     if (success) {
       router.push("/")
     }
