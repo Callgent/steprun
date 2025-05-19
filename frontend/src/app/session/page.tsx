@@ -3,7 +3,7 @@ import { SessionDemo } from "@/components/session-demo"
 
 export default function DemoPage() {
   return (
-    <div className="min-h-screen font-mono p-4 ">
+    <div className="font-mono p-4 ">
       <div className="container mx-auto py-8 ">
         <h1 className="text-3xl font-bold mb-8 text-center">Interactive Code Execution</h1>
         <div className="max-w-4xl mx-auto ">
