@@ -1,3 +1,4 @@
+import { ExecuteCodeResponse } from "../types/session"
 import { apiRequest } from "./index"
 import type {
   User,
@@ -10,7 +11,6 @@ import type {
   CreateSessionRequest,
   SessionResponse,
   ExecuteCodeRequest,
-  ExecuteCodeResponse,
   InstallPackagesRequest,
   InstallPackagesResponse,
   ApiResponse,
@@ -137,7 +137,7 @@ export const sessionService = {
   /**
    * Create a new sandbox session
    */
-  createSession(data: CreateSessionRequest): Promise<ApiResponse<SessionResponse>> {
+  createSession(data: CreateSessionRequest): Promise<SessionResponse> {
     return apiRequest.post("/api/v1/sessions", data)
   },
 
@@ -158,7 +158,7 @@ export const sessionService = {
   /**
    * Execute code
    */
-  executeCode(sessionId: string, data: ExecuteCodeRequest): Promise<ApiResponse<ExecuteCodeResponse>> {
+  executeCode(sessionId: string, data: ExecuteCodeRequest): Promise<ExecuteCodeResponse> {
     return apiRequest.post(`/api/v1/sessions/${sessionId}/exec`, data)
   },
 
@@ -186,7 +186,7 @@ export const sessionService = {
   /**
    * Get session list
    */
-  getSessions(): Promise<ApiResponse<{ sessions: Array<SessionResponse["session"]> }>> {
+  getSessions(): Promise<ExecuteCodeResponse[]> {
     return apiRequest.get("/api/v1//sessions")
   },
 }

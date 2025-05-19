@@ -16,18 +16,16 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
     try {
       // Real API call using axios
-      const response = await api.sessions.createSession({ runtime })
+      const { session_id } = await api.sessions.createSession({ runtime })
 
-      if (response.data && response.data.session) {
-        const newSession = response.data.session
-
+      if (session_id) {
         set((state) => ({
-          sessions: [...state.sessions, newSession],
-          currentSession: newSession,
+          sessions: [...state.sessions, { session_id }],
+          currentSession: { session_id },
           isLoading: false,
         }))
 
-        return newSession
+        return { session_id }
       }
 
       throw new Error("Failed to create session")
@@ -49,8 +47,8 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       // Real API call using axios
       const response = await api.sessions.getSession(id)
 
-      if (response.data && response.data.session) {
-        const session = response.data.session
+      if (response.data && response.data.session_id) {
+        const session = response.data.session_id
         set({ isLoading: false })
         return session
       }
@@ -75,12 +73,12 @@ export const useSessionStore = create<SessionState>((set, get) => ({
       await api.sessions.deleteSession(id)
 
       // Update state
-      const updatedSessions = get().sessions.filter((s) => s.id !== id)
+      const updatedSessions = get().sessions.filter((s) => s.session_id !== id)
       const currentSession = get().currentSession
 
       set({
         sessions: updatedSessions,
-        currentSession: currentSession && currentSession.id === id ? null : currentSession,
+        currentSession: currentSession && currentSession.session_id === id ? null : currentSession,
         isLoading: false,
       })
     } catch (error) {
@@ -105,25 +103,24 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
     try {
       // Real API call using axios
-      const response = await api.sessions.executeCode(currentSession.id, { code })
+      const { result, stderr } = await api.sessions.executeCode(currentSession.session_id, { code })
 
-      if (response.data) {
-        const result = response.data
-        set({ executionResult: result, isLoading: false })
-        return result
+      if (result) {
+        const executionResult = { result: result, stderr: stderr || "" }
+        set({ executionResult: executionResult, isLoading: false })
+        return executionResult;
       }
 
       throw new Error("Failed to execute code")
     } catch (error) {
       const errorResult: ExecuteCodeResponse = {
         status: "error",
-        output: "",
-        executionTime: 0,
-        error: error instanceof Error ? error.message : "An error occurred",
+        result: 'error',
+        stderr: error instanceof Error ? error.message : "An error occurred",
       }
 
       set({
-        error: errorResult.error,
+        error: 'error',
         executionResult: errorResult,
         isLoading: false,
       })
@@ -144,7 +141,7 @@ export const useSessionStore = create<SessionState>((set, get) => ({
 
     try {
       // Real API call using axios
-      await api.sessions.installPackages(currentSession.id, { packages })
+      await api.sessions.installPackages(currentSession.session_id, { packages })
       set({ isLoading: false })
     } catch (error) {
       set({

@@ -1,16 +1,11 @@
 export interface Session {
-  id: string
-  runtime: string
-  status: "creating" | "ready" | "error" | "hibernated"
-  createdAt: string
-  expiresAt?: string
+  session_id: string;
 }
 
 export interface ExecuteCodeResponse {
-  status: "success" | "error"
-  output: string
-  executionTime: number
-  error?: string
+  status?: string;
+  result: string;
+  stderr?: string;
 }
 
 export interface SessionState {

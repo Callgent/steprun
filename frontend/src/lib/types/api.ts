@@ -55,24 +55,11 @@ export interface CreateSessionRequest {
 }
 
 export interface SessionResponse {
-  session: {
-    id: string;
-    runtime: string;
-    status: "creating" | "ready" | "error" | "hibernated";
-    createdAt: string;
-    expiresAt?: string;
-  }
+  session_id: string
 }
 
 export interface ExecuteCodeRequest {
   code: string;
-}
-
-export interface ExecuteCodeResponse {
-  status: "success" | "error";
-  output: string;
-  executionTime: number;
-  error?: string;
 }
 
 export interface InstallPackagesRequest {
