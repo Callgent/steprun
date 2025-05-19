@@ -1,7 +1,8 @@
 import Link from "next/link"
-import { Code, Terminal, Server, Github, CheckCircle, AlertCircle } from "lucide-react"
+import { Code, Terminal, Server, Github, AlertCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { PixelStar, PixelCursor, PixelRobot, PixelCode } from "@/components/pixel-decorations"
+import { Header } from "@/components/header"
 
 export default function Home() {
   return (
@@ -20,30 +21,7 @@ export default function Home() {
         <PixelStar className="pixel-pulse" />
       </div>
 
-      {/* Header */}
-      <header className="container mx-auto py-6 px-4 flex justify-between items-center border-b-4 border-zinc-800 relative z-10">
-        <div className="flex items-center gap-2">
-          <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-          <span className="text-xl font-bold pixel-text">StepRun.ai</span>
-        </div>
-        <nav className="hidden md:flex gap-8">
-          <Link href="#features" className="text-zinc-400 hover:text-emerald-500 transition-colors pixel-text text-sm">
-            Features
-          </Link>
-          <Link href="#api" className="text-zinc-400 hover:text-emerald-500 transition-colors pixel-text text-sm">
-            API
-          </Link>
-          <Link href="#demo" className="text-zinc-400 hover:text-emerald-500 transition-colors pixel-text text-sm">
-            Demo
-          </Link>
-        </nav>
-        <Button
-          variant="outline"
-          className="border-4 border-emerald-500 text-emerald-500 hover:bg-emerald-950 pixel-button"
-        >
-          <span className="pixel-text text-sm">Docs</span>
-        </Button>
-      </header>
+
 
       {/* Hero Section */}
       <section className="container mx-auto py-24 px-4 relative">
@@ -56,15 +34,15 @@ export default function Home() {
         <div className="absolute bottom-10 left-[40%] opacity-50 z-0">
           <PixelCursor />
         </div>
-
         <div className="max-w-3xl mx-auto text-center space-y-6 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight pixel-text">
-            Secure <span className="text-emerald-500">REPL Sandbox</span> Runtime Environment
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight special-title font-pixelRounded">
+            Run a Step then Generate <span className="text-emerald-500 text-2xl">CoT for code</span>
           </h1>
-          <p className="text-xl font-semibold text-emerald-400 mt-4 mb-6 pixel-text">CoT for code</p>
-          <p className="text-lg text-zinc-400 pixel-text">Perfect for AI Agents to generate and run code line by line</p>
+          <p className="text-lg text-zinc-400 pixel-text">
+            Steprun.ai is a Secure REPL Sandbox Runtime Environment for Agentic & AI use cases
+          </p>
           <div className="pt-6">
-            <Link href="/get-api-key">
+            <Link href="/profile">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-lg pixel-button">
                 <span className="pixel-text">Get API Key</span>
               </Button>
@@ -136,32 +114,41 @@ export default function Home() {
       {/* Features */}
       <section id="features" className="container mx-auto py-24 px-4">
         <h2 className="text-3xl font-bold text-center mb-16 pixel-text">Core Advantages</h2>
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-2 2xl:grid-cols-4 gap-8">
           <div className="bg-zinc-900 p-6 border-4 border-zinc-800 flex flex-col items-center text-center pixel-container">
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
-              <CheckCircle className="h-8 w-8 text-emerald-500 pixel-icon" />
+              <Code className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl font-bold mb-4 pixel-text">Simplified Logic</h3>
+            <h3 className="text-xl font-bold mb-4 pixel-text">Escape if-else hell</h3>
             <p className="text-zinc-400 pixel-text text-xs">
-              Avoid complex branching logic by focusing only on the current execution path
+              Focus on the current execution path only, skipping exponential branching complexity.
             </p>
           </div>
           <div className="bg-zinc-900 p-6 border-4 border-zinc-800 flex flex-col items-center text-center pixel-container">
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <AlertCircle className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl font-bold mb-4 pixel-text">Immediate Feedback</h3>
+            <h3 className="text-xl font-bold mb-4 pixel-text">Debug line by line</h3>
             <p className="text-zinc-400 pixel-text text-xs">
-              Get instant error feedback and adjustments as each line executes
+              Catch and fix errors instantly–line by line, no post-hoc tracing.
             </p>
           </div>
           <div className="bg-zinc-900 p-6 border-4 border-zinc-800 flex flex-col items-center text-center pixel-container">
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <Code className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl font-bold mb-4 pixel-text">Just-in-Time Implementation</h3>
+            <h3 className="text-xl font-bold mb-4 pixel-text">Declare now, implement later</h3>
             <p className="text-zinc-400 pixel-text text-xs">
-              Methods can be initially declared with placeholders and implemented only when called
+              Define function stubs first, fill logic only when called (like human iterative coding).
+            </p>
+          </div>
+          <div className="bg-zinc-900 p-6 border-4 border-zinc-800 flex flex-col items-center text-center pixel-container">
+            <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
+              <Server className="h-8 w-8 text-emerald-500 pixel-icon" />
+            </div>
+            <h3 className="text-xl font-bold mb-4 pixel-text">Hibernate & restore</h3>
+            <p className="text-zinc-400 pixel-text text-xs">
+              Persist sessions mid-execution, ideal for long-running processes and iterative workflows.
             </p>
           </div>
         </div>
@@ -184,7 +171,6 @@ export default function Home() {
               </div>
             </div>
             <div className="p-6 space-y-6">
-              {/* Create Session */}
               <div>
                 <h3 className="text-lg font-semibold mb-2 pixel-text">1. Create a Session</h3>
                 <pre className="bg-zinc-950 p-3 border-2 border-zinc-800 text-xs md:text-sm overflow-x-auto">
@@ -312,9 +298,11 @@ Content-Type: application/json
           <h2 className="text-3xl font-bold pixel-text">Ready to Power Your Applications?</h2>
           <p className="text-lg text-zinc-400 pixel-text">Get started with our sandbox runtime API today</p>
           <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-center">
-            <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-lg pixel-button">
-              <span className="pixel-text">Get API Access</span>
-            </Button>
+            <Link href="/profile">
+              <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-lg pixel-button">
+                <span className="pixel-text">Get API Access</span>
+              </Button>
+            </Link>
             <Button
               variant="outline"
               className="border-4 border-zinc-700 text-zinc-300 hover:bg-zinc-800 px-8 py-6 text-lg pixel-button"
@@ -331,10 +319,10 @@ Content-Type: application/json
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="flex items-center gap-2">
               <Terminal className="h-5 w-5 text-emerald-500 pixel-icon" />
-              <span className="font-bold pixel-text">StepRun.ai</span>
+              <span className="font-bold pixel-text">𑢡tepRun.ai</span>
             </div>
             <div className="text-zinc-500 text-sm pixel-text">
-              © {new Date().getFullYear()} StepRun.ai. All rights reserved.
+              © {new Date().getFullYear()} 𑢡tepRun.ai. All rights reserved.
             </div>
             <div className="flex gap-6">
               <Link href="#" className="text-zinc-400 hover:text-emerald-500">

@@ -11,21 +11,30 @@ import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { useAuthStore } from "@/lib/store/auth-store"
 
-export default function LoginPage() {
+export default function RegisterPage() {
   const router = useRouter()
-  const { login, isLoading, error, clearError } = useAuthStore()
+  const { register, isLoading, error, clearError } = useAuthStore()
 
+  const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [confirmPassword, setConfirmPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
+  const [passwordError, setPasswordError] = useState("")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     clearError()
+    setPasswordError("")
 
-    const success = await login(email, password)
-    if (success) {
-      router.push("/")
+    if (password !== confirmPassword) {
+      setPasswordError("Passwords do not match")
+      return
+    }
+
+    const result = await register(username, email, password)
+    if (result === true) {
+      router.push("/dashboard")
     }
   }
 
@@ -36,16 +45,29 @@ export default function LoginPage() {
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold text-xl pixel-text">𑢡tepRun.ai</span>
+              <span className="font-bold text-xl pixel-text">StepRun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center pixel-text">Sign In</CardTitle>
+          <CardTitle className="text-2xl text-center pixel-text">Create Account</CardTitle>
           <CardDescription className="text-zinc-400 text-center pixel-text">
-            Enter your credentials to access your account
+            Enter your information to create a new account
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="username" className="pixel-text">
+                Username
+              </Label>
+              <Input
+                id="username"
+                placeholder="yourname"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                required
+                className="bg-zinc-900 border-zinc-700 "
+              />
+            </div>
             <div className="space-y-2">
               <Label htmlFor="email" className="pixel-text">
                 Email
@@ -86,6 +108,24 @@ export default function LoginPage() {
                 </Button>
               </div>
             </div>
+            <div className="space-y-2">
+              <Label htmlFor="confirmPassword" className="pixel-text">
+                Confirm Password
+              </Label>
+              <Input
+                id="confirmPassword"
+                type={showPassword ? "text" : "password"}
+                placeholder="••••••••"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                className="bg-zinc-900 border-zinc-700 "
+              />
+            </div>
+
+            {passwordError && (
+              <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm pixel-text">{passwordError}</div>
+            )}
 
             {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm pixel-text">{error}</div>}
 
@@ -94,20 +134,15 @@ export default function LoginPage() {
               className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 pixel-button"
               disabled={isLoading}
             >
-              {isLoading ? "Signing in..." : "Sign In"}
+              {isLoading ? "Registering..." : "Register"}
             </Button>
           </form>
         </CardContent>
-        <CardFooter className="flex flex-col space-y-4">
-          <div className="text-center text-sm text-zinc-400 pixel-text">
-            <Link href="/forgot-password" className="hover:text-emerald-500 underline underline-offset-4">
-              Forgot password?
-            </Link>
-          </div>
-          <div className="text-center text-sm text-zinc-400 pixel-text">
-            Don't have an account?{" "}
-            <Link href="/register" className="hover:text-emerald-500 underline underline-offset-4">
-              Register
+        <CardFooter>
+          <div className="text-center w-full text-sm text-zinc-400 pixel-text">
+            Already have an account?{" "}
+            <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
+              Sign In
             </Link>
           </div>
         </CardFooter>

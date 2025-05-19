@@ -33,9 +33,25 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: "Press Start 2P", "Space Mono", monospace;
     image-rendering: pixelated;
   }
+}
+@font-face {
+  font-family: 'LLPixelFun Regular';
+  src: url('/font/LLPixelFun-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'LLPixelFun Rounded';
+  src: url('/font/LLPixelFun-Rounded.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+.special-title {
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0 #000;
 }
 
 /* Pixel art styling */
