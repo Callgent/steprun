@@ -14,7 +14,7 @@ class BoxedService:
         session_id, _ = await self.factory.create_session()
         return session_id
 
-    async def exec_code(self, session_id: str, code: str) -> str:
+    async def exec_code(self, session_id: str, code: str) -> tuple[str, str]:
         box_id = self._get_box_id(session_id)
         proc = self.manager.box_registry.get(box_id)
         if not proc:

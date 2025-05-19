@@ -26,7 +26,7 @@ boxed_service = BoxedService(prewarm_count=2)
 @asynccontextmanager
 async def service_lifespan(app: FastAPI):
     """
-    FastAPI 生命周期钩子，用于初始化和清理 BoxedService。
+    FastAPI app lifespan event to initialize and close the BoxedService.
     """
     await boxed_service.init()
     yield
@@ -43,7 +43,8 @@ class CodeExecRequest(BaseModel):
 
 
 class CodeExecResponse(BaseModel):
-    result: str
+    stdout: str
+    stderr: str
 
 
 class PackageInstallRequest(BaseModel):
@@ -70,7 +71,7 @@ class SessionResponse(BaseModel):
 @router.post("", response_model=SessionResponse)
 async def create_session(session: SessionDep, current_user: CurrentUser) -> Any:
     """
-    创建新的沙箱会话。
+    Create a new sandbox session and return the session ID.
     """
     session_id = await boxed_service.create_session()
 
@@ -92,7 +93,7 @@ def get_my_sessions(
     limit: int = 100,
 ) -> Any:
     """
-    获取当前用户的所有会话，默认按创建时间降序排列
+    Get all sessions for the current user, ordered by creation time (descending).
     """
     return get_user_sessions(
         session=session,
@@ -106,7 +107,7 @@ def _check_user_session(
     session: SessionDep, session_id: str, current_user: CurrentUser
 ) -> UserSession:
     """
-    检查会话是否处于活跃状态。
+    Check if the session belongs to the current user.
     """
     user_session = get_user_session(
         session=session, session_id=session_id, user_id=current_user.id
@@ -121,11 +122,10 @@ async def destroy_session(
     session_id: str, session: SessionDep, current_user: CurrentUser
 ) -> Response:
     """
-    销毁沙箱会话。
+    Destroy the sandbox session and remove the user session record.
     """
     _check_user_session(session, session_id, current_user)
     try:
-        # 标记会话为非活跃状态
         deactivate_user_session(
             session=session, session_id=session_id, user_id=current_user.id
         )
@@ -148,12 +148,12 @@ async def exec_code(
     current_user: CurrentUser,
 ) -> Any:
     """
-    执行代码。
+    Execute code in the sandbox session.
     """
     _check_user_session(session, session_id, current_user)
     try:
-        result = await boxed_service.exec_code(session_id, request.code)
-        return CodeExecResponse(result=result)
+        stdout, stderr = await boxed_service.exec_code(session_id, request.code)
+        return CodeExecResponse(stdout=stdout, stderr=stderr)
     except (KeyError, RuntimeError) as e:
         raise HTTPException(status_code=404, detail=str(e))
 
@@ -171,7 +171,7 @@ async def install_packages(
     current_user: CurrentUser,
 ) -> Response:
     """
-    安装 Python 包。
+    install packages in the sandbox session.
     """
     _check_user_session(session, session_id, current_user)
     try:
@@ -191,7 +191,7 @@ async def hibernate_session(
     session_id: str, session: SessionDep, current_user: CurrentUser
 ) -> Any:
     """
-    休眠会话（保存快照并终止进程）。
+    Hibernate the session and return a snapshot ID.
     """
     _check_user_session(session, session_id, current_user)
     try:
@@ -214,7 +214,7 @@ async def restore_session(
     current_user: CurrentUser,
 ) -> Response:
     """
-    从快照恢复会话。
+    Restore the session from a snapshot.
     """
     _check_user_session(session, session_id, current_user)
     try:

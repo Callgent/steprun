@@ -12,8 +12,8 @@ readline.set_history_length(0)
 os.environ["PYTHONHISTFILE"] = "/dev/null"
 
 # 禁用自动缩进
-sys.ps1 = ">>> "
-sys.ps2 = "... "
+sys.ps1 = ""
+sys.ps2 = ""
 
 # 无颜色输出
 os.environ["TERM"] = "dumb"
