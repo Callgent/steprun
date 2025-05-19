@@ -51,17 +51,19 @@ export function PixelRobot({ className = "" }: { className?: string }) {
 
 export function PixelCode({ className = "" }: { className?: string }) {
   return (
-    <div className={`relative ${className}`}>
+    <div className={`relative ${className} pixel-float`}>
       <div className="w-32 h-24 bg-zinc-800 border-2 border-zinc-600 relative">
         <div className="w-full h-4 bg-zinc-900 flex items-center px-1">
           <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
           <div className="w-2 h-2 bg-yellow-500 rounded-full mr-1"></div>
           <div className="w-2 h-2 bg-green-500 rounded-full"></div>
         </div>
-        <div className="w-16 h-2 bg-emerald-500 absolute" style={{ top: "8px", left: "4px" }}></div>
-        <div className="w-24 h-2 bg-purple-500 absolute" style={{ top: "12px", left: "8px" }}></div>
-        <div className="w-20 h-2 bg-blue-500 absolute" style={{ top: "16px", left: "4px" }}></div>
-        <div className="w-12 h-2 bg-emerald-500 absolute" style={{ top: "20px", left: "8px" }}></div>
+        <div className="pt-1 space-y-1 pl-1 pr-2">
+          <div className="w-full h-2 bg-emerald-500 rounded"></div>
+          <div className="w-full h-2 bg-purple-500 rounded"></div>
+          <div className="w-full h-2 bg-blue-500 rounded"></div>
+          <div className="w-full h-2 bg-emerald-500 rounded"></div>
+        </div>
       </div>
     </div>
   )

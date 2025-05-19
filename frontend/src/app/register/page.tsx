@@ -39,19 +39,16 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-900 text-zinc-100 font-mono flex items-center justify-center p-4 pixel-grid">
+    <div className="bg-zinc-900 mt-10 text-zinc-100 font-mono text-base flex items-center justify-center p-4 pixel-grid">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold text-xl pixel-text">StepRun.ai</span>
+              <span className="font-bold text-2xl pixel-text">Steprun.ai</span>
             </Link>
           </div>
           <CardTitle className="text-2xl text-center pixel-text">Create Account</CardTitle>
-          <CardDescription className="text-zinc-400 text-center pixel-text">
-            Enter your information to create a new account
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -124,10 +121,10 @@ export default function RegisterPage() {
             </div>
 
             {passwordError && (
-              <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm pixel-text">{passwordError}</div>
+              <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{passwordError}</div>
             )}
 
-            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm pixel-text">{error}</div>}
+            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{error}</div>}
 
             <Button
               type="submit"
@@ -139,7 +136,7 @@ export default function RegisterPage() {
           </form>
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full text-sm text-zinc-400 pixel-text">
+          <div className="text-center w-full  text-zinc-400 pixel-text">
             Already have an account?{" "}
             <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
               Sign In

@@ -42,7 +42,7 @@ export default function ForgotPasswordPage() {
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold text-xl pixel-text">StepRun.ai</span>
+              <span className="font-bold text-xs pixel-text">Steprun.ai</span>
             </Link>
           </div>
           <CardTitle className="text-2xl text-center pixel-text">Reset Password</CardTitle>
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
               </div>
 
               {error && (
-                <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm pixel-text">{error}</div>
+                <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{error}</div>
               )}
 
               <Button
@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
           )}
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full text-sm text-zinc-400 pixel-text">
+          <div className="text-center w-full  text-zinc-400 pixel-text">
             Remembered your password?{" "}
             <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
               Back to Sign In

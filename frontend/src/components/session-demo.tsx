@@ -11,7 +11,7 @@ export function SessionDemo() {
   const { currentSession, executionResult, isLoading, error, createSession, deleteSession, executeCode } =
     useSessionStore()
 
-  const [code, setCode] = useState('print("Hello, 𑢡tepRun.ai!")')
+  const [code, setCode] = useState('print("Hello, 𑢡teprun.ai!")')
 
   const handleCreateSession = async () => {
     try {
@@ -89,21 +89,21 @@ export function SessionDemo() {
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm text-zinc-400">Code:</label>
+              <label className=" text-zinc-400">Code:</label>
               <Textarea
                 value={code}
                 onChange={(e) => setCode(e.target.value)}
-                className="font-mono text-sm bg-zinc-900 border-zinc-700 min-h-[150px]"
+                className="font-mono  bg-zinc-900 border-zinc-700 min-h-[150px]"
                 placeholder="Enter your Python code here..."
               />
             </div>
 
-            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md text-sm">{error}</div>}
+            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md ">{error}</div>}
 
             {executionResult && (
               <div className="space-y-2">
-                <label className="text-sm text-zinc-400">Output:</label>
-                <div className="bg-zinc-900 p-3 rounded-md font-mono text-sm whitespace-pre-wrap">
+                <label className=" text-zinc-400">Output:</label>
+                <div className="bg-zinc-900 p-3 rounded-md font-mono  whitespace-pre-wrap">
                   {executionResult.output}
                 </div>
                 <div className="flex justify-between text-xs text-zinc-500">

@@ -14,6 +14,7 @@ const config: Config = {
 				sans: ['LLPixelFun Regular', 'sans-serif'],
 				pixel: ['LLPixelFun Regular', 'monospace'],
 				pixelRounded: ['LLPixelFun Rounded', 'monospace'],
+				ps2: ['"Press Start 2P"', '"Space Mono"', 'monospace'],
 			},
 			colors: {
 				background: 'hsl(var(--background))',

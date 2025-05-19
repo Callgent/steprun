@@ -31,7 +31,6 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { ApiKey } from "@/lib/types/api"
-import { Header } from "@/components/header"
 
 export default function ProfilePage() {
     const { user, apiKeys, isLoading, error, addApiKey, deleteApiKey } = useAuthStore()
@@ -85,17 +84,17 @@ export default function ProfilePage() {
         router.push('/')
     }
     return (
-        <div className="container mx-auto py-8 font-pixel">
+        <div className="container mx-auto py-8">
             <div className=" mx-auto">
                 <div className="mb-8">
-                    <h1 className="text-3xl font-bold mb-2 pixel-text">Profile</h1>
+                    <h1 className="text-2xl font-bold mb-2 pixel-text">Profile</h1>
                     <p className="text-zinc-400 pixel-text">Manage your account and API keys</p>
                 </div>
 
                 <div className="grid md:grid-cols-3 gap-8 mb-12">
                     <Card className="bg-zinc-800 border-zinc-700 col-span-3 md:col-span-1 pixel-container">
                         <CardHeader>
-                            <CardTitle className="pixel-text">Account Info</CardTitle>
+                            <CardTitle className="pixel-text text-lg">Account Info</CardTitle>
                         </CardHeader>
                         <CardContent>
                             <div className="space-y-4">
@@ -115,10 +114,10 @@ export default function ProfilePage() {
                         </CardContent>
                     </Card>
 
-                    <Card className="bg-zinc-800 border-zinc-700 col-span-3 md:col-span-2 pixel-container">
+                    <Card className="bg-zinc-800 border-zinc-700 col-span-3 md:col-span-2 pixel-container z-10">
                         <CardHeader className="flex flex-row items-center justify-between">
                             <div>
-                                <CardTitle className="pixel-text">API Keys</CardTitle>
+                                <CardTitle className="pixel-text text-lg">API Keys</CardTitle>
                                 <CardDescription className="pixel-text">Manage your API keys</CardDescription>
                             </div>
                             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
@@ -128,10 +127,10 @@ export default function ProfilePage() {
                                         <span>New Key</span>
                                     </Button>
                                 </DialogTrigger>
-                                <DialogContent className="bg-zinc-800 border-zinc-700 pixel-container">
+                                <DialogContent className="bg-zinc-800 border-zinc-700 pixel-container font-ps2 ">
                                     <DialogHeader>
-                                        <DialogTitle className="pixel-text">Create New API Key</DialogTitle>
-                                        <DialogDescription className="pixel-text">
+                                        <DialogTitle className="pixel-text text-sm">Create New API Key</DialogTitle>
+                                        <DialogDescription className="pixel-text text-xs">
                                             Give your API key a name to help you identify it later.
                                         </DialogDescription>
                                     </DialogHeader>
@@ -145,7 +144,7 @@ export default function ProfilePage() {
                                                 placeholder="e.g. Development, Production"
                                                 value={newKeyName}
                                                 onChange={(e) => setNewKeyName(e.target.value)}
-                                                className="bg-zinc-900 border-zinc-700 pixel-text"
+                                                className="bg-zinc-900 border-zinc-700 pixel-text font-mono"
                                             />
                                         </div>
                                     </div>
@@ -162,7 +161,7 @@ export default function ProfilePage() {
                                             className="bg-emerald-600 hover:bg-emerald-700 pixel-button"
                                             disabled={isLoading}
                                         >
-                                            <span className="pixel-text">{isLoading ? "Creating..." : "Create Key"}</span>
+                                            <span className="">{isLoading ? "Creating..." : "Create Key"}</span>
                                         </Button>
                                     </DialogFooter>
                                 </DialogContent>
@@ -172,13 +171,13 @@ export default function ProfilePage() {
                             {apiKeys.length === 0 ? (
                                 <div className="text-center py-8">
                                     <Key className="h-12 w-12 text-zinc-600 mx-auto mb-4 pixel-icon" />
-                                    <h3 className="text-lg font-medium mb-2 pixel-text">No API Keys</h3>
-                                    <p className="text-zinc-400 mb-4 pixel-text">You haven't created any API keys yet.</p>
+                                    <h3 className="text-sm font-medium mb-2 pixel-text">No API Keys</h3>
+                                    <p className="text-zinc-400 mb-4 pixel-text text-xs">You haven't created any API keys yet.</p>
                                     <Button
                                         onClick={() => setIsDialogOpen(true)}
                                         className="bg-emerald-600 hover:bg-emerald-700 pixel-button"
                                     >
-                                        <span className="pixel-text">Create your first API key</span>
+                                        <span className="text-xs">Create your first API key</span>
                                     </Button>
                                 </div>
                             ) : (
@@ -193,7 +192,7 @@ export default function ProfilePage() {
                                                     <h3 className="font-medium pixel-text">{apiKey.name || 'my_key'}</h3>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <code className="text-zinc-400 text-xs font-mono pixel-text">
+                                                    <code className="text-zinc-400 text-xs pixel-text">
                                                         {apiKey.api_key.substring(0, 8)}...{apiKey.api_key.substring(apiKey.api_key.length - 4)}
                                                     </code>
                                                     <Button
@@ -257,7 +256,7 @@ export default function ProfilePage() {
                         </CardHeader>
                         <CardContent>
                             <div className="bg-zinc-900 p-4 rounded-md flex items-center justify-between border-4 border-zinc-700">
-                                <code className="text-emerald-500 font-mono text-sm break-all pixel-text">{newKey.api_key}</code>
+                                <code className="text-emerald-500 break-all pixel-text">{newKey.api_key}</code>
                                 <Button
                                     variant="ghost"
                                     size="icon"
@@ -284,13 +283,13 @@ export default function ProfilePage() {
                     </Card>
                 )}
 
-                <div className="bg-amber-500/10 border-4 border-amber-500/20 p-4 rounded-md pixel-container">
+                <div className="bg-amber-500/10 border-4 border-amber-500/20 p-4 rounded-md pixel-container  text-xs">
                     <h3 className="text-amber-500 font-medium mb-2 pixel-text">Important Security Information</h3>
-                    <p className="text-zinc-300 text-sm mb-2 pixel-text">
+                    <p className="text-zinc-300  mb-2 pixel-text">
                         Keep your API keys secure. Do not share them in publicly accessible areas such as GitHub, client-side
                         code, or forums.
                     </p>
-                    <p className="text-zinc-300 text-sm pixel-text">
+                    <p className="text-zinc-300  pixel-text">
                         If you believe an API key has been compromised, delete it immediately and create a new one.
                     </p>
                 </div>

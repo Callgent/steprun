@@ -36,6 +36,7 @@
     image-rendering: pixelated;
   }
 }
+
 @font-face {
   font-family: 'LLPixelFun Regular';
   src: url('/font/LLPixelFun-Regular.ttf') format('truetype');
@@ -49,6 +50,16 @@
   font-weight: normal;
   font-style: normal;
 }
+
+/* globals.css 或 app.css 中 */
+
+.font-ps2 {
+  font-family: "Press Start 2P", "Space Mono", monospace;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  letter-spacing: normal;
+}
+
 .special-title {
   letter-spacing: 1px;
   text-shadow: 3px 3px 0 #000;
