@@ -1,6 +1,8 @@
+import asyncio
+from contextlib import asynccontextmanager
 from typing import Any
 
-from fastapi import APIRouter, HTTPException, status, Response
+from fastapi import APIRouter, FastAPI, HTTPException, status, Response
 from pydantic import BaseModel, Field
 
 from app.services.boxed_service import BoxedService
@@ -18,7 +20,17 @@ from app.models import UserSession, UserSessionCreate, UserSessionPublic
 
 
 router = APIRouter(prefix="/sessions", tags=["Boxed"])
-boxed_service = BoxedService(prewarm_count=5)
+boxed_service = BoxedService(prewarm_count=2)
+
+
+@asynccontextmanager
+async def service_lifespan(app: FastAPI):
+    """
+    FastAPI 生命周期钩子，用于初始化和清理 BoxedService。
+    """
+    await boxed_service.init()
+    yield
+    # await boxed_service.close()
 
 
 # ==========================

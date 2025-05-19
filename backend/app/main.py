@@ -1,3 +1,4 @@
+from app.api.routes.sessions import service_lifespan
 import sentry_sdk
 from fastapi import FastAPI, Request
 from fastapi.routing import APIRoute
@@ -18,6 +19,7 @@ app = FastAPI(
     title=settings.PROJECT_NAME,
     openapi_url=f"{settings.API_V1_STR}/openapi.json",
     generate_unique_id_function=custom_generate_unique_id,
+    lifespan=service_lifespan,
 )
 
 # Set all CORS enabled origins

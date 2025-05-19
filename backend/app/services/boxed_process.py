@@ -7,10 +7,13 @@ from typing import Optional
 
 from nanoid import generate
 
+log_level = os.getenv("LOG_LEVEL", "INFO").upper()
 logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+    level=logging._nameToLevel.get(log_level),
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
 )
 logger = logging.getLogger(__name__)
+logger.info("Log level set to %s", log_level)
 
 SANDBOX_ROOT = os.getenv("SANDBOX_ROOT", "/sandboxes/")
 logger.info("\t\tSandbox root: %s", SANDBOX_ROOT)
@@ -28,6 +31,30 @@ class BoxedProcess:
         self._monitor_task = None
         self._terminated = False
         self._health_check_interval = 30  # 每30秒检查一次进程健康状态
+
+    async def __aenter__(self):
+        """支持异步上下文管理器协议"""
+        await self.start()
+        return self
+
+    async def __aexit__(self, exc_type, exc_val, exc_tb):
+        """退出上下文时停止进程"""
+        await self.stop()
+
+    def __del__(self):
+        """确保对象被垃圾回收时进程也被终止"""
+        if self.process and not self._terminated:
+            # 创建一个新的事件循环来运行同步代码
+            try:
+                loop = asyncio.get_event_loop()
+                if loop.is_running():
+                    loop.create_task(self.stop())
+                else:
+                    loop.run_until_complete(self.stop())
+            except Exception:
+                # 如果无法获取事件循环，直接终止进程
+                if hasattr(self.process, "kill"):
+                    self.process.kill()
 
     async def start(self) -> None:
         """启动沙箱进程并设置监控"""
@@ -305,30 +332,6 @@ class BoxedProcess:
                         pass
             logger.info("Box %s stopped", self.box_id)
             self.process = None
-
-    async def __aenter__(self):
-        """支持异步上下文管理器协议"""
-        await self.start()
-        return self
-
-    async def __aexit__(self, exc_type, exc_val, exc_tb):
-        """退出上下文时停止进程"""
-        await self.stop()
-
-    def __del__(self):
-        """确保对象被垃圾回收时进程也被终止"""
-        if self.process and not self._terminated:
-            # 创建一个新的事件循环来运行同步代码
-            try:
-                loop = asyncio.get_event_loop()
-                if loop.is_running():
-                    loop.create_task(self.stop())
-                else:
-                    loop.run_until_complete(self.stop())
-            except Exception:
-                # 如果无法获取事件循环，直接终止进程
-                if hasattr(self.process, "kill"):
-                    self.process.kill()
 
     @property
     def is_running(self) -> bool:
