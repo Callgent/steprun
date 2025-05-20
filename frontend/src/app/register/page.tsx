@@ -34,7 +34,7 @@ export default function RegisterPage() {
 
     const result = await register(username, email, password)
     if (result === true) {
-      router.push("/dashboard")
+      router.push("/login")
     }
   }
 
