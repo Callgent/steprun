@@ -19,7 +19,7 @@ export const authService = {
    * User registration
    */
   register(data: RegisterRequest): Promise<AuthResponse> {
-    return apiRequest.post("/api/users/signup", data)
+    return apiRequest.post("/api/v1/users/signup", data)
   },
 
   /**
