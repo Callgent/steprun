@@ -2,6 +2,8 @@ from sqlmodel import Field, Index, SQLModel
 from datetime import datetime, timezone
 import uuid
 from sqlalchemy.dialects.postgresql import JSONB  # PostgreSQL 专用
+from enum import Enum
+
 # 或者对于通用数据库使用：from sqlalchemy import JSON
 
 from pydantic import EmailStr
@@ -30,8 +32,7 @@ class UserRegister(SQLModel):
 
 # Properties to receive via API on update, all are optional
 class UserUpdate(UserBase):
-    email: EmailStr | None = Field(
-        default=None, max_length=255)  # type: ignore
+    email: EmailStr | None = Field(default=None, max_length=255)  # type: ignore
     password: str | None = Field(default=None, min_length=8, max_length=40)
 
 
@@ -50,10 +51,10 @@ class User(UserBase, table=True):
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     hashed_password: str
     api_key: str | None = Field(default=None, unique=True, index=True)
-    items: list["Item"] = Relationship(
-        back_populates="owner", cascade_delete=True)
+    items: list["Item"] = Relationship(back_populates="owner", cascade_delete=True)
     sessions: list["UserSession"] = Relationship(
-        back_populates="user", cascade_delete=True)
+        back_populates="user", cascade_delete=True
+    )
 
 
 # Properties to return via API, id is always required
@@ -80,7 +81,8 @@ class ItemCreate(ItemBase):
 # Properties to receive on item update
 class ItemUpdate(ItemBase):
     title: str | None = Field(
-        default=None, min_length=1, max_length=255)  # type: ignore
+        default=None, min_length=1, max_length=255
+    )  # type: ignore
 
 
 # Database model, database table inferred from class name
@@ -142,7 +144,7 @@ class SandboxUsage(SandboxUsageBase, table=True):
         primary_key=True,
         index=True,
         nullable=False,
-        description="外部暴露的唯一ID"
+        description="外部暴露的唯一ID",
     )
     user_id: uuid.UUID = Field(foreign_key="user.id", index=True)
     # box_id: int = Field(foreign_key="box.id")
@@ -154,6 +156,7 @@ class SandboxUsage(SandboxUsageBase, table=True):
 
 class SandboxUsageCreate(SandboxUsageBase):
     """创建时自动生成id和executed_at"""
+
     pass
 
 
@@ -163,6 +166,13 @@ class SandboxUsageOut(SandboxUsageBase):
     executed_at: datetime
 
 
+class SessionStatus(str, Enum):
+    STARTED = "started"
+    STOPPED = "stopped"
+    HIBERNATED = "hibernated"
+    DESTROYED = "destroyed"
+
+
 class UserSessionBase(SQLModel):
     session_id: str = Field(unique=True, index=True)
     created_at: datetime = Field(
@@ -170,13 +180,13 @@ class UserSessionBase(SQLModel):
         index=True,
     )
     expires_at: Optional[datetime] = Field(default=None)
-    is_active: bool = Field(default=True)
+    status: SessionStatus = Field(default=SessionStatus.STARTED)
     # metadata: Optional[dict] = Field(default=None, sa_type=JSONB)
 
 
 class UserSession(UserSessionBase, table=True):
     __table_args__ = (
-        Index('idx_created_at_brin', 'created_at', postgresql_using='brin'),  # 复合索引
+        Index("idx_created_at_brin", "created_at", postgresql_using="brin"),  # 复合索引
     )
     id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
     user_id: uuid.UUID = Field(foreign_key="user.id")

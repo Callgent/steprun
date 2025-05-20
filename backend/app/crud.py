@@ -4,7 +4,7 @@ from typing import Any, Optional
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate, UserSession, UserSessionCreate
+from app.models import Item, ItemCreate, SessionStatus, User, UserCreate, UserUpdate, UserSession, UserSessionCreate
 
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
@@ -73,7 +73,7 @@ def deactivate_user_session(*, session: Session, session_id: str, user_id: uuid.
     db_session = get_user_session(
         session=session, session_id=session_id, user_id=user_id)
     if db_session:
-        db_session.is_active = False
+        db_session.status = SessionStatus.STOPPED
         session.add(db_session)
         session.commit()
         session.refresh(db_session)
