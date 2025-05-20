@@ -3,7 +3,7 @@ import { Header } from '@/components/header'
 import '@/components/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'StepRun'
+  title: 'CoT for code - 𑢡teprun.ai'
 }
 
 export default function RootLayout({
