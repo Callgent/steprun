@@ -1,10 +1,10 @@
 import { create } from "zustand"
 import { persist } from "zustand/middleware"
 import { api } from "@/lib/axios/api-services"
-import type { AuthState } from "@/lib/types/auth"
+import type { AuthStore } from "@/lib/types/auth"
 
 // Create authentication state store
-export const useAuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthStore>()(
   persist(
     (set, get) => ({
       user: null,

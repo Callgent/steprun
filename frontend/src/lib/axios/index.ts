@@ -46,9 +46,9 @@ axiosInstance.interceptors.response.use(
       const errorMessage = error.response.data.message || "Request failed";
       console.log(errorMessage);
       toast.error(errorMessage, {
-			position: "top-center",
-			closeButton: true
-		});
+        position: "top-center",
+        closeButton: true
+      });
       return Promise.reject(errorMessage)
     } else if (error.request) {
       // The request was made but no response was received
@@ -79,6 +79,12 @@ export const apiRequest = {
   delete: <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
     return axiosInstance.delete(url, config).then((response: AxiosResponse<T>) => response.data)
   },
+}
+
+export interface ApiResponse<T = any> {
+  data: T;
+  message?: string;
+  status: number;
 }
 
 export default axiosInstance

@@ -1,20 +1,6 @@
-import { ExecuteCodeResponse } from "../types/session"
-import { apiRequest } from "./index"
-import type {
-  User,
-  LoginRequest,
-  RegisterRequest,
-  AuthResponse,
-  CreateApiKeyRequest,
-  ApiKeyResponse,
-  ApiKeysResponse,
-  CreateSessionRequest,
-  SessionResponse,
-  ExecuteCodeRequest,
-  InstallPackagesRequest,
-  InstallPackagesResponse,
-  ApiResponse,
-} from "@/lib/types/api"
+import { ApiKeyResponse, ApiKeysResponse, AuthResponse, CreateApiKeyRequest, LoginRequest, RegisterRequest, User } from "../types/auth"
+import { CreateSessionRequest, ExecuteCodeResponse, Session, SessionResponse } from "../types/session"
+import { apiRequest, Params } from "./index"
 
 // Authentication service
 export const authService = {
@@ -46,28 +32,28 @@ export const authService = {
   /**
    * User logout
    */
-  logout(): Promise<ApiResponse<null>> {
+  logout(): Promise<null> {
     return apiRequest.post("/api/v1/auth/logout")
   },
 
   /**
    * Refresh token
    */
-  refreshToken(): Promise<ApiResponse<{ token: string }>> {
+  refreshToken(): Promise<{ token: string }> {
     return apiRequest.post("/api/v1/auth/refresh-token")
   },
 
   /**
    * Request password reset
    */
-  requestPasswordReset(email: string): Promise<ApiResponse<null>> {
+  requestPasswordReset(email: string): Promise<null> {
     return apiRequest.post("/api/v1/auth/request-password-reset", { email })
   },
 
   /**
    * Reset password
    */
-  resetPassword(token: string, password: string): Promise<ApiResponse<null>> {
+  resetPassword(token: string, password: string): Promise<null> {
     return apiRequest.post("/api/v1/auth/reset-password", { token, password })
   },
 }
@@ -77,7 +63,7 @@ export const apiKeyService = {
   /**
    * Get all API keys for the user
    */
-  getApiKeys(): Promise<ApiResponse<ApiKeysResponse>> {
+  getApiKeys(): Promise<ApiKeysResponse> {
     return apiRequest.get("/api/v1/api-keys")
   },
 
@@ -91,14 +77,14 @@ export const apiKeyService = {
   /**
    * Get a single API key details
    */
-  getApiKey(id: string): Promise<ApiResponse<ApiKeyResponse>> {
+  getApiKey(id: string): Promise<ApiKeyResponse> {
     return apiRequest.get(`/api/v1/api-keys/${id}`)
   },
 
   /**
    * Delete an API key
    */
-  deleteApiKey(id: string): Promise<ApiResponse<null>> {
+  deleteApiKey(id: string): Promise<null> {
     return apiRequest.delete(`/api/v1/api-keys/${id}`)
   },
 
@@ -108,28 +94,9 @@ export const apiKeyService = {
   updateApiKey(
     id: string,
     data: { name?: string; status?: "active" | "revoked" },
-  ): Promise<ApiResponse<ApiKeyResponse>> {
+  ): Promise<ApiKeyResponse> {
     return apiRequest.patch(`/api/v1/api-keys/${id}`, data)
-  },
-
-  /**
-   * Get API key usage statistics
-   */
-  getApiKeyUsage(
-    id: string,
-    period: "day" | "week" | "month" = "day",
-  ): Promise<
-    ApiResponse<{
-      usage: Array<{
-        timestamp: string
-        count: number
-      }>
-    }>
-  > {
-    return apiRequest.get(`/api/v1/api-keys/${id}/usage`, {
-      params: { period },
-    })
-  },
+  }
 }
 
 // Sandbox session service
@@ -137,49 +104,49 @@ export const sessionService = {
   /**
    * Create a new sandbox session
    */
-  createSession(data: CreateSessionRequest): Promise<SessionResponse> {
+  createSession(data: CreateSessionRequest): Promise<Session> {
     return apiRequest.post("/api/v1/sessions", data)
   },
 
   /**
    * Get session details
    */
-  getSession(sessionId: string): Promise<ApiResponse<SessionResponse>> {
-    return apiRequest.get(`/api/v1/sessions/${sessionId}`)
+  getSession(params: Params): Promise<SessionResponse> {
+    return apiRequest.get("/api/v1/sessions", { params })
   },
 
   /**
    * Delete a session
    */
-  deleteSession(sessionId: string): Promise<ApiResponse<null>> {
+  deleteSession(sessionId: string): Promise<null> {
     return apiRequest.delete(`/api/v1/sessions/${sessionId}`)
   },
 
   /**
    * Execute code
    */
-  executeCode(sessionId: string, data: ExecuteCodeRequest): Promise<ExecuteCodeResponse> {
+  executeCode(sessionId: string, data: any): Promise<ExecuteCodeResponse> {
     return apiRequest.post(`/api/v1/sessions/${sessionId}/exec`, data)
   },
 
   /**
    * Install packages
    */
-  installPackages(sessionId: string, data: InstallPackagesRequest): Promise<ApiResponse<InstallPackagesResponse>> {
+  installPackages(sessionId: string, data: any): Promise<any> {
     return apiRequest.post(`/api/v1/sessions/${sessionId}/packages`, data)
   },
 
   /**
    * Hibernate a session
    */
-  hibernateSession(sessionId: string): Promise<ApiResponse<SessionResponse>> {
+  hibernateSession(sessionId: string): Promise<SessionResponse> {
     return apiRequest.post(`/api/v1//sessions/${sessionId}/hibernate`)
   },
 
   /**
    * Restore a session
    */
-  restoreSession(sessionId: string): Promise<ApiResponse<SessionResponse>> {
+  restoreSession(sessionId: string): Promise<SessionResponse> {
     return apiRequest.post(`/api/v1//sessions/${sessionId}/restore`)
   },
 

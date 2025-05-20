@@ -25,7 +25,7 @@ export function PixelStar({ className = "" }: { className?: string }) {
 
 export function PixelCursor({ className = "" }: { className?: string }) {
   return (
-    <div className={`relative ${className} pixel-float`}>
+    <div className={`relative ${className} pixel-float z-10`}>
       <div className="w-4 h-4 bg-white"></div>
       <div className="w-4 h-4 bg-white absolute" style={{ top: "4px", left: "4px" }}></div>
       <div className="w-4 h-4 bg-white absolute" style={{ top: "8px", left: "8px" }}></div>

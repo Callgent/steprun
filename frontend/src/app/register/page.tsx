@@ -39,21 +39,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-zinc-900 mt-10 text-zinc-100 font-mono text-base flex items-center justify-center p-4 pixel-grid">
+    <div className="bg-zinc-900 mt-10 text-zinc-100 text-base flex items-center justify-center p-4 pixel-grid font-sans">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold text-2xl pixel-text">Steprun.ai</span>
+              <span className=" text-2xl ">Steprun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center pixel-text">Create Account</CardTitle>
+          <CardTitle className="text-2xl text-center ">Create Account</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="pixel-text">
+              <Label htmlFor="username" className="">
                 Username
               </Label>
               <Input
@@ -62,11 +62,11 @@ export default function RegisterPage() {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 required
-                className="bg-zinc-900 border-zinc-700 "
+                className="bg-zinc-900 border-zinc-700 font-mono"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email" className="pixel-text">
+              <Label htmlFor="email" className="">
                 Email
               </Label>
               <Input
@@ -76,11 +76,11 @@ export default function RegisterPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-zinc-900 border-zinc-700 "
+                className="bg-zinc-900 border-zinc-700 font-mono"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="pixel-text">
+              <Label htmlFor="password" className="">
                 Password
               </Label>
               <div className="relative">
@@ -91,7 +91,7 @@ export default function RegisterPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-zinc-900 border-zinc-700 "
+                  className="bg-zinc-900 border-zinc-700 font-mono"
                 />
                 <Button
                   type="button"
@@ -106,7 +106,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="pixel-text">
+              <Label htmlFor="confirmPassword" className="">
                 Confirm Password
               </Label>
               <Input
@@ -116,15 +116,15 @@ export default function RegisterPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="bg-zinc-900 border-zinc-700 "
+                className="bg-zinc-900 border-zinc-700 font-mono"
               />
             </div>
 
             {passwordError && (
-              <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{passwordError}</div>
+              <div className="bg-red-500/20 text-red-500 p-3 rounded-md  ">{passwordError}</div>
             )}
 
-            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{error}</div>}
+            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md  ">{error}</div>}
 
             <Button
               type="submit"
@@ -136,7 +136,7 @@ export default function RegisterPage() {
           </form>
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full  text-zinc-400 pixel-text">
+          <div className="text-center w-full  text-zinc-400 ">
             Already have an account?{" "}
             <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
               Sign In

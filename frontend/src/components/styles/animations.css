@@ -1,0 +1,29 @@
+/* Pixel art animations */
+@keyframes pixel-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.pixel-float {
+  animation: pixel-float 3s ease-in-out infinite;
+}
+
+@keyframes pixel-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+}
+
+.pixel-pulse {
+  animation: pixel-pulse 2s ease-in-out infinite;
+}
+

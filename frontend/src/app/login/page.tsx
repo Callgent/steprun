@@ -31,21 +31,21 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="mt-10 bg-zinc-900 text-zinc-100 font-mono text-base flex items-center justify-center p-4 pixel-grid">
+    <div className="mt-10 bg-zinc-900 text-zinc-100 text-base flex items-center justify-center p-4 pixel-grid font-sans">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold pixel-text text-2xl">𑢡teprun.ai</span>
+              <span className="  text-2xl">Steprun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center pixel-text">Sign In</CardTitle>
+          <CardTitle className="text-2xl text-center ">Sign In</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email" className="pixel-text">
+              <Label htmlFor="email" className="">
                 Email
               </Label>
               <Input
@@ -55,11 +55,11 @@ export default function LoginPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-zinc-900 border-zinc-700 "
+                className="bg-zinc-900 border-zinc-700 font-mono"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="pixel-text">
+              <Label htmlFor="password" className="">
                 Password
               </Label>
               <div className="relative">
@@ -70,7 +70,7 @@ export default function LoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-zinc-900 border-zinc-700 "
+                  className="bg-zinc-900 border-zinc-700 font-mono"
                 />
                 <Button
                   type="button"
@@ -85,7 +85,7 @@ export default function LoginPage() {
               </div>
             </div>
 
-            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{error}</div>}
+            {error && <div className="bg-red-500/20 text-red-500 p-3 rounded-md  ">{error}</div>}
 
             <Button
               type="submit"
@@ -97,12 +97,12 @@ export default function LoginPage() {
           </form>
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
-          <div className="text-center  text-zinc-400 pixel-text">
+          <div className="text-center  text-zinc-400 ">
             <Link href="/forgot-password" className="hover:text-emerald-500 underline underline-offset-4">
               Forgot password?
             </Link>
           </div>
-          <div className="text-center  text-zinc-400 pixel-text">
+          <div className="text-center  text-zinc-400 ">
             Don't have an account?{" "}
             <Link href="/register" className="hover:text-emerald-500 underline underline-offset-4">
               Register

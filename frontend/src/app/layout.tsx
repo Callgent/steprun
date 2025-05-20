@@ -1,11 +1,9 @@
 import type { Metadata } from 'next'
-import './globals.css'
 import { Header } from '@/components/header'
+import '@/components/styles/globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'StepRun'
 }
 
 export default function RootLayout({
@@ -15,13 +13,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
-      </head>
       <body>
-        <div className="min-h-screen bg-zinc-900 text-zinc-100 font-ps2 pixel-grid text-sm">
+        <div className="min-h-screen bg-zinc-900 text-zinc-100 pixel-grid font-mono">
           <Header />
-          {children}
+          <div className='max-w-7xl m-auto'>
+            {children}
+          </div>
         </div>
       </body>
     </html>

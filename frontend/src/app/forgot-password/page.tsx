@@ -36,17 +36,17 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="bg-zinc-900 text-zinc-100 font-mono flex items-center justify-center p-4 pixel-grid">
+    <div className="bg-zinc-900 text-zinc-100 flex items-center justify-center p-4 pixel-grid font-sans">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="font-bold text-xs pixel-text">Steprun.ai</span>
+              <span className=" text-xs ">Steprun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center pixel-text">Reset Password</CardTitle>
-          <CardDescription className="text-zinc-400 text-center pixel-text">
+          <CardTitle className="text-2xl text-center ">Reset Password</CardTitle>
+          <CardDescription className="text-zinc-400 text-center ">
             Enter your email to receive a password reset link
           </CardDescription>
         </CardHeader>
@@ -54,7 +54,7 @@ export default function ForgotPasswordPage() {
           {!isSubmitted ? (
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="pixel-text">
+                <Label htmlFor="email" className="">
                   Email
                 </Label>
                 <Input
@@ -64,12 +64,12 @@ export default function ForgotPasswordPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-zinc-900 border-zinc-700 pixel-text"
+                  className="bg-zinc-900 border-zinc-700 font-mono"
                 />
               </div>
 
               {error && (
-                <div className="bg-red-500/20 text-red-500 p-3 rounded-md  pixel-text">{error}</div>
+                <div className="bg-red-500/20 text-red-500 p-3 rounded-md  ">{error}</div>
               )}
 
               <Button
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
             </form>
           ) : (
             <div className="text-center space-y-4">
-              <div className="bg-emerald-500/20 text-emerald-500 p-4 rounded-md pixel-text">
+              <div className="bg-emerald-500/20 text-emerald-500 p-4 rounded-md ">
                 A reset link has been sent to your email. Please check your inbox and follow the instructions.
               </div>
               <Button
@@ -96,7 +96,7 @@ export default function ForgotPasswordPage() {
           )}
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full  text-zinc-400 pixel-text">
+          <div className="text-center w-full  text-zinc-400 ">
             Remembered your password?{" "}
             <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
               Back to Sign In

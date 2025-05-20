@@ -1,0 +1,88 @@
+@import url("./animations.css");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* font */
+@font-face {
+  font-family: 'LLPixelFun Regular';
+  src: url('/font/LLPixelFun-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'LLPixelFun Rounded';
+  src: url('/font/LLPixelFun-Rounded.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+::placeholder {
+  @apply !text-zinc-400 !font-mono;
+}
+
+/* overflow */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(128, 128, 128, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(128, 128, 128, 0.4);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(128, 128, 128, 0.7);
+}
+
+.special-title {
+  letter-spacing: 1px;
+  text-shadow: 3px 3px 0 #000;
+}
+
+/* Pixel art styling */
+.pixel-borders {
+  box-shadow: 0 -4px 0 0 #000, 0 4px 0 0 #000, -4px 0 0 0 #000, 4px 0 0 0 #000;
+  position: relative;
+  border: 4px solid #fff;
+}
+
+.pixel-button {
+  position: relative;
+  box-shadow: 0 4px 0 0 #000, 0 -4px 0 0 #000, 4px 0 0 0 #000, -4px 0 0 0 #000;
+  border: 4px solid #fff;
+  transition: all 0.1s;
+  transform-origin: center;
+}
+
+.pixel-button:hover {
+  transform: scale(1.05);
+}
+
+.pixel-button:active {
+  transform: scale(0.95);
+}
+
+.pixel-container {
+  border: 4px solid #fff;
+  box-shadow: 0 4px 0 0 #000, 0 -4px 0 0 #000, 4px 0 0 0 #000, -4px 0 0 0 #000;
+}
+
+.pixel-grid {
+  background-image: linear-gradient(rgba(50, 50, 50, 0.3) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(50, 50, 50, 0.3) 1px, transparent 1px);
+  background-size: 16px 16px;
+}
+
+.pixel-icon {
+  image-rendering: pixelated;
+  transform: scale(1.2);
+  filter: drop-shadow(2px 2px 0 #000);
+}

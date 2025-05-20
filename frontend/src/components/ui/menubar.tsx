@@ -179,7 +179,7 @@ const MenubarLabel = React.forwardRef<
   <MenubarPrimitive.Label
     ref={ref}
     className={cn(
-      "px-2 py-1.5  font-semibold",
+      "px-2 py-1.5  ",
       inset && "pl-8",
       className
     )}
