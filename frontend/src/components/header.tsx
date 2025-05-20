@@ -12,7 +12,7 @@ export function Header() {
   const { user } = useAuthStore()
   const router = useRouter()
   const pathname = usePathname()
-  const whitelist = ['/', '/login', '/register']
+  const whitelist = ['/', '/login', '/register', '/reset-password']
   useEffect(() => {
     const token = localStorage.getItem('auth_token');
     if (!whitelist.includes(pathname) && !token) {

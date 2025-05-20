@@ -1,6 +1,7 @@
 import { ApiKeyResponse, ApiKeysResponse, AuthResponse, CreateApiKeyRequest, LoginRequest, RegisterRequest, User } from "../types/auth"
+import { Params } from "../types/global"
 import { CreateSessionRequest, ExecuteCodeResponse, Session, SessionResponse } from "../types/session"
-import { apiRequest, Params } from "./index"
+import { apiRequest } from "./index"
 
 // Authentication service
 export const authService = {
@@ -47,14 +48,14 @@ export const authService = {
    * Request password reset
    */
   requestPasswordReset(email: string): Promise<null> {
-    return apiRequest.post("/api/v1/auth/request-password-reset", { email })
+    return apiRequest.post(`/api/v1/password-recovery-html-content/${email}`)
   },
 
   /**
    * Reset password
    */
-  resetPassword(token: string, password: string): Promise<null> {
-    return apiRequest.post("/api/v1/auth/reset-password", { token, password })
+  resetPassword(token: string, new_password: string): Promise<{ message: string }> {
+    return apiRequest.post("/api/v1/reset-password/", { token, new_password })
   },
 }
 

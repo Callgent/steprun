@@ -98,7 +98,7 @@ export default function LoginPage() {
         </CardContent>
         <CardFooter className="flex flex-col space-y-4">
           <div className="text-center  text-zinc-400 ">
-            <Link href="/forgot-password" className="hover:text-emerald-500 underline underline-offset-4">
+            <Link href="/reset-password" className="hover:text-emerald-500 underline underline-offset-4">
               Forgot password?
             </Link>
           </div>

@@ -6,14 +6,14 @@ export interface AuthStore {
 
   userInfo: () => Promise<boolean>
   login: (username: string, password: string) => Promise<boolean>
-  register: (username: string, email: string, password: string) => Promise<boolean | string>
+  register: (full_name: string, email: string, password: string) => Promise<boolean | string>
   addApiKey: (name: string) => Promise<ApiKey>
   deleteApiKey: (id: string) => Promise<void>
   clearError: () => void
+  recovery: (email: string) => Promise<boolean | string>
+  resetPassword: (token: string, new_password: string) => Promise<boolean | string>
 }
 
-
-// 用户相关类型
 export interface User {
   id: string;
   is_active: boolean;
@@ -22,7 +22,6 @@ export interface User {
   email: boolean;
 }
 
-// 认证相关请求类型
 export interface LoginRequest {
   username: string;
   password: string;
@@ -30,7 +29,7 @@ export interface LoginRequest {
 }
 
 export interface RegisterRequest {
-  username: string;
+  full_name: string;
   email: string;
   password: string;
 }

@@ -11,6 +11,7 @@ export const useAuthStore = create<AuthStore>()(
       apiKeys: [],
       isLoading: false,
       error: null,
+
       userInfo: async () => {
         set({ isLoading: true, error: null })
         try {
@@ -27,6 +28,7 @@ export const useAuthStore = create<AuthStore>()(
           return false
         }
       },
+
       login: async (email, password) => {
         set({ isLoading: true, error: null });
         try {
@@ -53,11 +55,12 @@ export const useAuthStore = create<AuthStore>()(
       },
 
       // Register
-      register: async (username, email, password) => {
+      register: async (full_name, email, password) => {
         set({ isLoading: true, error: null })
         try {
           // Real API call using axios
-          await api.auth.register({ username, email, password })
+          await api.auth.register({ full_name, email, password })
+          set({ isLoading: false })
           return true
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : "An error occurred"
@@ -66,6 +69,42 @@ export const useAuthStore = create<AuthStore>()(
             isLoading: false,
           })
           return errorMessage
+        }
+      },
+
+      // requestPasswordReset
+      recovery: async (email) => {
+        set({ isLoading: true, error: null })
+        try {
+          // Real API call using axios
+          await api.auth.requestPasswordReset(email)
+          set({ isLoading: false })
+          return true
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : "An error occurred"
+          set({
+            error: errorMessage,
+            isLoading: false,
+          })
+          return errorMessage
+        }
+      },
+
+      // resetPassword
+      resetPassword: async (token, new_password) => {
+        set({ isLoading: true, error: null })
+        try {
+          // Real API call using axios
+          const { message } = await api.auth.resetPassword(token, new_password)
+          if (message) {
+            set({ isLoading: false })
+            return true
+          }
+          return false
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : "An error occurred"
+          set({ isLoading: false, error: errorMessage })
+          return false
         }
       },
 
