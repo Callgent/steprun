@@ -12,7 +12,7 @@ export function SessionDemo() {
   const { currentSession, executionResult, isLoading, setCurrentSession, executeCode } =
     useSessionStore()
   const searchParams = useSearchParams()
-  const [code, setCode] = useState('print("Hello, Steprun.ai!")')
+  const [code, setCode] = useState('print("Hello, 𑢡teprun.ai!")')
 
   const handleExecuteCode = async () => {
     if (!currentSession || !code.trim()) return
