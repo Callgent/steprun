@@ -43,6 +43,8 @@ export default function ForgotPasswordPage() {
         const result = await recovery(email)
         if (result) {
           setSuccessMessage("Reset link has been sent to your email.")
+        } else {
+          setError('error')
         }
       } else {
         const result = await resetPassword(token, newPassword)

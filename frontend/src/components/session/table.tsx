@@ -15,8 +15,8 @@ export function SessionTable() {
 
     const handleCreateSession = async () => {
         try {
-            const { session_id } = await createSession("python3.9")
-            router.push(`/session?session_id=${encodeURIComponent(session_id)}`)
+            await createSession("python3.9")
+            await getSession()
         } catch (error) {
             console.error("Failed to create session:", error)
         }
@@ -33,15 +33,15 @@ export function SessionTable() {
     return (
         <div className="">
             {sessions.length === 0 && (
-                <Card className="w-full bg-zinc-800 border-zinc-700 z-10">
+                <Card className="w-full bg-zinc-800 border-zinc-700 z-10 font-sans">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
+                        <CardTitle className="flex items-center gap-2 font-sans">
                             <Terminal className="h-5 w-5 text-emerald-500" />
                             Interactive Code Execution
                         </CardTitle>
                     </CardHeader>
                     <div className="text-center py-8">
-                        <Terminal className="h-12 w-12 text-zinc-600 mx-auto mb-4" />
+                        <Terminal className="h-14 w-14 text-zinc-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium mb-2">No Active Session</h3>
                         <p className="text-zinc-400 mb-4">Create a new session to start executing code.</p>
                         <Button

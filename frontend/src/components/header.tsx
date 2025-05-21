@@ -9,7 +9,7 @@ import { useEffect } from "react"
 import { usePathname, useRouter } from "next/navigation"
 
 export function Header() {
-  const { user } = useAuthStore()
+  const { user, clearError } = useAuthStore()
   const router = useRouter()
   const pathname = usePathname()
   const whitelist = ['/', '/login', '/register', '/reset-password']
@@ -18,23 +18,23 @@ export function Header() {
     if (!whitelist.includes(pathname) && !token) {
       router.push('/login')
     }
+    clearError()
   }, [pathname])
   return (
     <>
       <header className="container mx-auto py-4 px-2 flex justify-between items-center border-b-4 border-zinc-800 relative z-10 ">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity text-3xl font-rounded">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity font-rounded text-xl md:text-2xl xl:text-3xl">
           <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
           𑢡teprun.ai
         </Link>
-        <div className="flex items-center gap-4 font-sans">
+
+        <div className="flex justify-end gap-4 items-center font-sans">
           <Link href="https://api.steprun.ai/docs" className="hover:text-emerald-500" target="_blank">
             Docs
           </Link>
           <Link href="/#features" className="hover:text-emerald-500">
             Features
           </Link>
-        </div>
-        <div className="flex gap-4">
           {user ? (
             <Link href="/profile">
               <Button

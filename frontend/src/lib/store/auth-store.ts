@@ -21,11 +21,10 @@ export const useAuthStore = create<AuthStore>()(
           return true
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : "An error occurred"
-          set({
-            error: errorMessage,
-            isLoading: false,
-          })
+          set({ error: errorMessage })
           return false
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -40,17 +39,13 @@ export const useAuthStore = create<AuthStore>()(
             localStorage.setItem('auth_token', access_token);
             return true;
           }
-          set({
-            error: "Invalid credentials",
-            isLoading: false,
-          });
+          set({ error: "Invalid credentials" });
           return false;
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : "An error occurred",
-            isLoading: false,
-          });
+          set({ error: error instanceof Error ? error.message : "An error occurred" });
           return false;
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -60,15 +55,13 @@ export const useAuthStore = create<AuthStore>()(
         try {
           // Real API call using axios
           await api.auth.register({ full_name, email, password })
-          set({ isLoading: false })
           return true
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : "An error occurred"
-          set({
-            error: errorMessage,
-            isLoading: false,
-          })
+          set({ error: errorMessage })
           return errorMessage
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -77,16 +70,17 @@ export const useAuthStore = create<AuthStore>()(
         set({ isLoading: true, error: null })
         try {
           // Real API call using axios
-          await api.auth.requestPasswordReset(email)
-          set({ isLoading: false })
-          return true
+          const { message } = await api.auth.requestPasswordReset(email);
+          if (message) {
+            return true
+          }
+          return false
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : "An error occurred"
-          set({
-            error: errorMessage,
-            isLoading: false,
-          })
-          return errorMessage
+          set({ error: errorMessage, })
+          return false
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -97,14 +91,15 @@ export const useAuthStore = create<AuthStore>()(
           // Real API call using axios
           const { message } = await api.auth.resetPassword(token, new_password)
           if (message) {
-            set({ isLoading: false })
             return true
           }
           return false
         } catch (error) {
           const errorMessage = error instanceof Error ? error.message : "An error occurred"
-          set({ isLoading: false, error: errorMessage })
+          set({ error: errorMessage })
           return false
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -121,16 +116,15 @@ export const useAuthStore = create<AuthStore>()(
           if (api_key) {
             // Update state
             const updatedApiKeys = [...get().apiKeys, { api_key }]
-            set({ apiKeys: updatedApiKeys, isLoading: false })
+            set({ apiKeys: updatedApiKeys })
             return { api_key }
           }
           throw new Error("Failed to create API key")
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : "An error occurred",
-            isLoading: false,
-          })
+          set({ error: error instanceof Error ? error.message : "An error occurred", })
           throw error
+        } finally {
+          set({ isLoading: false })
         }
       },
 
@@ -146,13 +140,12 @@ export const useAuthStore = create<AuthStore>()(
           await api.apiKeys.deleteApiKey(delKey)
           // Update state
           const updatedApiKeys = get().apiKeys.filter((key) => key.api_key !== delKey)
-          set({ apiKeys: updatedApiKeys, isLoading: false })
+          set({ apiKeys: updatedApiKeys })
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : "An error occurred",
-            isLoading: false,
-          })
+          set({ error: error instanceof Error ? error.message : "An error occurred" })
           throw error
+        } finally {
+          set({ isLoading: false })
         }
       },
 

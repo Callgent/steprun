@@ -31,6 +31,8 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { ApiKey } from "@/lib/types/auth"
+import DemoPage from "../sessions/page"
+import Link from "next/link"
 
 export default function ProfilePage() {
     const { user, apiKeys, isLoading, error, addApiKey, deleteApiKey } = useAuthStore()
@@ -99,15 +101,21 @@ export default function ProfilePage() {
                             <div className="space-y-4">
                                 <div>
                                     <Label className="text-zinc-400 font-sans">Username</Label>
-                                    <p className="font-medium ">{user.full_name}</p>
+                                    <p className="font-medium font-mono">{user.full_name}</p>
                                 </div>
                                 <div>
                                     <Label className="text-zinc-400 font-sans">Email</Label>
-                                    <p className="font-medium ">{user.email}</p>
+                                    <p className="font-medium font-mono">{user.email}</p>
                                 </div>
                                 <div>
                                     <Label className="text-zinc-400 font-sans">API Keys</Label>
-                                    <p className="font-medium ">{apiKeys.length}</p>
+                                    <p className="font-medium font-mono">{apiKeys.length}</p>
+                                </div>
+                                <div>
+                                    <Label className="text-zinc-400 font-sans">Sessions</Label>
+                                    <Link href='/sessions' className="font-sans text-emerald-500">
+                                        <p className="font-medium text-sm font-mono mt-2">Start your session</p>
+                                    </Link>
                                 </div>
                             </div>
                         </CardContent>

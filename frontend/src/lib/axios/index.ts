@@ -44,7 +44,6 @@ axiosInstance.interceptors.response.use(
       // The request was made and the server responded with a status code
       // that falls out of the range of 2xx
       const errorMessage = error.response.data.message || "Request failed";
-      console.log(errorMessage);
       toast.error(errorMessage, {
         position: "top-center",
         closeButton: true

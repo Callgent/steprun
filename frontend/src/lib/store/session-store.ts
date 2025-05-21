@@ -19,18 +19,16 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       if (session_id) {
         set((state) => ({
           sessions: [...state.sessions, { session_id }],
-          currentSession: { session_id },
-          isLoading: false,
+          currentSession: { session_id }
         }))
         return { session_id }
       }
       throw new Error("Failed to create session")
     } catch (error) {
-      set({
-        error: error instanceof Error ? error.message : "An error occurred",
-        isLoading: false,
-      })
+      set({ error: error instanceof Error ? error.message : "An error occurred" })
       throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
 
@@ -40,16 +38,17 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       const sessions = await api.sessions.getSession(params || {})
       if (sessions.length > 0) {
-        set({ isLoading: false, sessions })
+        set({ sessions })
         return sessions
       }
       return []
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : "An error occurred",
-        isLoading: false,
       })
       throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
 
@@ -65,15 +64,14 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       set({
         sessions: updatedSessions,
         currentSession: currentSession && currentSession.session_id === id ? null : currentSession,
-        isLoading: false,
       })
     } catch (error) {
       set({
-        error: error instanceof Error ? error.message : "An error occurred",
-        isLoading: false,
+        error: error instanceof Error ? error.message : "An error occurred"
       })
-
       throw error
+    } finally {
+      set({ isLoading: false })
     }
   },
 
@@ -90,13 +88,11 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
     try {
       // Real API call using axios
       const { stdout, stderr } = await api.sessions.executeCode(currentSession.session_id, { code })
-
       if (stdout || stderr) {
         const executionResult = { stdout: stdout, stderr: stderr || "" }
-        set({ executionResult: executionResult, isLoading: false })
+        set({ executionResult: executionResult })
         return executionResult;
       }
-
       throw new Error("Failed to execute code")
     } catch (error) {
       const errorResult: ExecuteCodeResponse = {
@@ -106,10 +102,11 @@ export const useSessionStore = create<SessionStore>((set, get) => ({
       }
       set({
         error: error instanceof Error ? error.message : "An error occurred",
-        executionResult: errorResult,
-        isLoading: false,
+        executionResult: errorResult
       })
       return errorResult
+    } finally {
+      set({ isLoading: false })
     }
   },
 

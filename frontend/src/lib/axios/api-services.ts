@@ -47,7 +47,7 @@ export const authService = {
   /**
    * Request password reset
    */
-  requestPasswordReset(email: string): Promise<null> {
+  requestPasswordReset(email: string): Promise<{ message: string }> {
     return apiRequest.post(`/api/v1/password-recovery/${email}`)
   },
 
@@ -55,7 +55,7 @@ export const authService = {
    * Reset password
    */
   resetPassword(token: string, new_password: string): Promise<{ message: string }> {
-    return apiRequest.post("/api/v1/reset-password/", { token, new_password })
+    return apiRequest.post("/api/v1/reset-password", { token, new_password })
   },
 }
 
