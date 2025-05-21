@@ -4,6 +4,7 @@ services:
     container_name: api.steprun.ai
     networks:
       - steprun_private
+      - default
     env_file:
       - ${APP_ENV_FILE:-.env.prod}
     user: root
@@ -49,3 +50,5 @@ networks:
   steprun_private:
     driver: bridge
     internal: true
+  default:
+    driver: bridge
