@@ -5,7 +5,7 @@ services:
     networks:
       - steprun_network
     env_file:
-      - ${APP_ENV_FILE:-.env.prod}
+      - ${APP_ENV_FILE:-./backend/.env.prod}
     user: root
     environment:
       POSTGRES_SERVER: pg
