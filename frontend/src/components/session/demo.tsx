@@ -30,17 +30,17 @@ export function SessionDemo() {
   }, [])
   return (
     <Card
-      className="w-full bg-zinc-800 border-zinc-700 z-10 font-sans"
+      className="w-full bg-zinc-800 border-zinc-700 z-10 font-ps2"
     >
       <CardHeader>
         <CardTitle className="flex items-center justify-between flex-wrap gap-2">
-          <div className="flex items-center">
+          <div className="flex items-center text-lg">
             <Terminal className="h-5 w-5 text-emerald-500 mr-2" />
             <span>Interactive Code Execution</span>
           </div>
           <Button
             onClick={handleExecuteCode}
-            className="bg-emerald-600 hover:bg-emerald-700 p-2 rounded"
+            className="bg-emerald-600 hover:bg-emerald-700 p-2 rounded !text-base flex items-center"
             disabled={isLoading || !code.trim()}
           >
             {isLoading ? (
@@ -48,7 +48,7 @@ export function SessionDemo() {
             ) : (
               <>
                 <Play className="h-6 w-6" />
-                <span className="text-xl">Execute</span>
+                <span className="">Execute</span>
               </>
             )}
           </Button>

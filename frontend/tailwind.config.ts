@@ -12,7 +12,8 @@ const config: Config = {
 		extend: {
 			fontFamily: {
 				sans: ['LLPixelFun Regular', 'sans-serif'],
-				rounded: ['LLPixelFun Rounded', 'monospace']
+				rounded: ['LLPixelFun Rounded', 'monospace'],
+				ps2: ['"Press Start 2P"', '"Space Mono"', 'monospace'],
 			},
 			colors: {
 				background: 'hsl(var(--background))',

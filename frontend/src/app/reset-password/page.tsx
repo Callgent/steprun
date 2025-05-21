@@ -65,17 +65,17 @@ export default function ForgotPasswordPage() {
   }
 
   return (
-    <div className="bg-zinc-900 text-zinc-100 flex items-center justify-center p-4 pixel-grid font-sans">
+    <div className="bg-zinc-900 text-zinc-100 flex items-center justify-center p-4 pixel-grid font-ps2">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className="text-3xl">Steprun.ai</span>
+              <span className="text-xl">Steprun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center">{token ? "Set New Password" : "Reset Password"}</CardTitle>
-          <CardDescription className="text-zinc-400 text-center">
+          <CardTitle className="text-base text-center">{token ? "Set New Password" : "Reset Password"}</CardTitle>
+          <CardDescription className="text-zinc-400 text-center !text-xs">
             {token
               ? "Enter your new password below."
               : "Enter your email to receive a password reset link."}
@@ -86,7 +86,7 @@ export default function ForgotPasswordPage() {
             {!token ? (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
+                  <Label htmlFor="email" className="text-base">Email</Label>
                   <Input
                     id="email"
                     type="email"
@@ -101,7 +101,7 @@ export default function ForgotPasswordPage() {
             ) : (
               <>
                 <div className="space-y-2">
-                  <Label htmlFor="new-password">New Password</Label>
+                  <Label htmlFor="new-password" className="text-base">New Password</Label>
                   <Input
                     id="new-password"
                     type="password"
@@ -130,7 +130,7 @@ export default function ForgotPasswordPage() {
           </form>
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full text-zinc-400">
+          <div className="text-center w-full text-zinc-400 text-xs">
             {!token ? (
               <>
                 Remembered your password?{" "}

@@ -33,20 +33,20 @@ export function SessionTable() {
     return (
         <div className="">
             {sessions.length === 0 && (
-                <Card className="w-full bg-zinc-800 border-zinc-700 z-10 font-sans">
+                <Card className="w-full bg-zinc-800 border-zinc-700 z-10 font-ps2">
                     <CardHeader>
-                        <CardTitle className="flex items-center gap-2 font-sans">
+                        <CardTitle className="flex items-center gap-2 font-ps2 !text-lg">
                             <Terminal className="h-5 w-5 text-emerald-500" />
                             Interactive Code Execution
                         </CardTitle>
                     </CardHeader>
-                    <div className="text-center py-8">
+                    <div className="text-center py-8 text-xs">
                         <Terminal className="h-14 w-14 text-zinc-600 mx-auto mb-4" />
                         <h3 className="text-lg font-medium mb-2">No Active Session</h3>
                         <p className="text-zinc-400 mb-4">Create a new session to start executing code.</p>
                         <Button
                             onClick={handleCreateSession}
-                            className="bg-emerald-600 hover:bg-emerald-700 rounded-[5px]"
+                            className="bg-emerald-600 hover:bg-emerald-700 rounded pixel-button"
                             disabled={isLoading}
                         >
                             {isLoading ? "Creating..." : "Create Python Session"}
@@ -59,9 +59,9 @@ export function SessionTable() {
                 <div className="bg-grid-small-white/[0.2] text-white font-mono overflow-hidden">
                     <div className="border border-white/20 p-6 mb-8">
                         <div className="flex justify-between items-center mb-6">
-                            <h3 className=" text-3xl font-sans">Session List</h3>
+                            <h3 className=" text-3xl font-ps2">Session List</h3>
                             <Button onClick={handleCreateSession} disabled={isLoading} className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 pixel-button">
-                                <span className="font-sans">+ New</span>
+                                <span className="font-ps2">+ New</span>
                             </Button>
                         </div>
 
@@ -73,7 +73,7 @@ export function SessionTable() {
                                         className="border border-white/20 p-4 grid grid-cols-12 gap-4 hover:bg-white/5 transition-colors"
                                     >
                                         <div className="col-span-4 ">
-                                            <div className="text-gray-400 mb-1 font-sans">Session ID</div>
+                                            <div className="text-gray-400 mb-1 font-ps2">Session ID</div>
                                             <div
                                                 className="font-medium truncate cursor-pointer text-emerald-500"
                                                 onClick={() => handleSessionClick(session.session_id)}>
@@ -81,15 +81,15 @@ export function SessionTable() {
                                             </div>
                                         </div>
                                         <div className="col-span-3 ">
-                                            <div className="text-gray-400 mb-1 font-sans">Created</div>
+                                            <div className="text-gray-400 mb-1 font-ps2">Created</div>
                                             <div>{formatDate(session.created_at)}</div>
                                         </div>
                                         <div className="col-span-3 ">
-                                            <div className="text-gray-400 mb-1 font-sans">Expires</div>
+                                            <div className="text-gray-400 mb-1 font-ps2">Expires</div>
                                             <div>{formatDate(session.expires_at)}</div>
                                         </div>
                                         <div className="col-span-2 ">
-                                            <div className="text-gray-400 mb-1 font-sans">Status</div>
+                                            <div className="text-gray-400 mb-1 font-ps2">Status</div>
                                             <div
                                                 className={`
                                                         ${session.status === SessionStatus.STARTED ? "text-green-400" : ""}

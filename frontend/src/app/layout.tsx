@@ -13,6 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" />
+      </head>
       <body>
         <div className="min-h-screen bg-zinc-900 text-zinc-100 pixel-grid font-mono">
           <Header />

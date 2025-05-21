@@ -12,13 +12,13 @@ export default function Home() {
             <div>Run a Step then Generate</div>
             <div className="text-emerald-500 text-2xl mt-4">CoT for code</div>
           </h1>
-          <p className="max-w-md md:max-w-xl xl:max-w-3xl mx-auto text-zinc-400 font-sans text-xl">
+          <p className="max-w-md md:max-w-xl xl:max-w-3xl mx-auto text-zinc-400 font-ps2 text-xl">
             Steprun.ai is a Secure REPL Sandbox Runtime Environment for Agentic & AI use cases
           </p>
           <div className="pt-6 flex gap-4 justify-center flex-wrap">
             <Link href="/sessions">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 pixel-button transition-transform hover:scale-105">
-                <span className="font-sans text-base">Get started</span>
+                <span className="font-ps2 text-base">Get started</span>
               </Button>
             </Link>
           </div>
@@ -30,11 +30,11 @@ export default function Home() {
       </div>
 
       <section id="apidocs" className="container mx-auto py-12 px-4">
-        <h2 className="font-sans text-center mb-12 text-3xl">Core API Endpoints</h2>
+        <h2 className="font-ps2 text-center mb-12 !text-2xl">Core API Endpoints</h2>
         <div className="max-w-4xl mx-auto bg-zinc-950 border-4 border-zinc-800 overflow-hidden pixel-container">
           <div className="bg-zinc-800 px-4 py-2 flex items-center gap-2">
             <Code className="h-4 w-4 text-emerald-500 pixel-icon" />
-            <span className="font-sans">API Reference</span>
+            <span className="font-ps2">API Reference</span>
           </div>
           <div className="px-6 py-4 space-y-6">
             <div className="border-b-4 border-zinc-800 pb-4">
@@ -89,13 +89,13 @@ export default function Home() {
       </section>
 
       <section id="features" className="container mx-auto py-24 px-4">
-        <h2 className="font-sans text-center mb-12 text-3xl">Core Advantages</h2>
+        <h2 className="font-ps2 text-center mb-12 !text-2xl">Core Advantages</h2>
         <div className="grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-8">
           <div className="bg-zinc-900 p-6 border-4 border-zinc-800 flex flex-col items-center text-center pixel-container">
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <CheckCircle className="h-8 w-8 text-emerald-500" />
             </div>
-            <h3 className="text-xl mb-4 font-sans">Escape if-else hell</h3>
+            <h3 className="text-xl mb-4 font-ps2">Escape if-else hell</h3>
             <p className="text-zinc-400 ">
               Focus on the current execution path only, skipping exponential branching complexity.
             </p>
@@ -104,7 +104,7 @@ export default function Home() {
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <AlertCircle className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl  mb-4 font-sans">Debug line by line</h3>
+            <h3 className="text-xl  mb-4 font-ps2">Debug line by line</h3>
             <p className="text-zinc-400 ">
               Catch and fix errors instantly–line by line, no post-hoc tracing.
             </p>
@@ -113,7 +113,7 @@ export default function Home() {
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <Code className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl  mb-4 font-sans">Declare now, implement later</h3>
+            <h3 className="text-xl  mb-4 font-ps2">Declare now, implement later</h3>
             <p className="text-zinc-400 ">
               Define function stubs first, fill logic only when called (like human iterative coding).
             </p>
@@ -122,7 +122,7 @@ export default function Home() {
             <div className="h-16 w-16 bg-emerald-900/30 flex items-center justify-center mb-6">
               <Server className="h-8 w-8 text-emerald-500 pixel-icon" />
             </div>
-            <h3 className="text-xl  mb-4 font-sans">Hibernate & restore</h3>
+            <h3 className="text-xl  mb-4 font-ps2">Hibernate & restore</h3>
             <p className="text-zinc-400 ">
               Persist sessions mid-execution, ideal for long-running processes and iterative workflows.
             </p>
@@ -132,7 +132,7 @@ export default function Home() {
 
       <section id="demo" className="container mx-auto py-24 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2 className="font-sans text-center mb-12 text-3xl">API in Action</h2>
+          <h2 className="font-ps2 text-center mb-12 !text-2xl">API in Action</h2>
           <div className="bg-zinc-900 border-4 border-zinc-800 overflow-hidden pixel-container">
             <div className="border-b-4 border-zinc-800 p-4 flex justify-between items-center">
               <div className="flex items-center gap-2">
@@ -217,13 +217,13 @@ Content-Type: application/json
 
       <section className="container mx-auto py-24 px-4 text-base">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          <h2 className="font-sans text-center mb-12 text-3xl">Perfect for AI Platforms & Tools</h2>
-          <p className="text-base text-zinc-400 font-sans">
+          <h2 className="font-ps2 text-center mb-12 !text-2xl">Perfect for AI Platforms & Tools</h2>
+          <p className="text-base text-zinc-400 font-ps2">
             Our sandbox runtime provides the execution environment that AI platforms need
           </p>
           <div className="grid md:grid-cols-2 gap-8 pt-8">
             <div className="bg-zinc-800/50 p-6 border-4 border-zinc-700 pixel-container">
-              <h3 className="mb-4 text-xl font-sans">For AI Platforms</h3>
+              <h3 className="mb-4 text-xl font-ps2">For AI Platforms</h3>
               <p className="text-zinc-400 mb-4 ">
                 Integrate our sandbox API to safely execute code generated by your AI models
               </p>
@@ -243,7 +243,7 @@ Content-Type: application/json
               </ul>
             </div>
             <div className="bg-zinc-800/50 p-6 border-4 border-zinc-700 pixel-container">
-              <h3 className="mb-4 text-xl font-sans">For Developers</h3>
+              <h3 className="mb-4 text-xl font-ps2">For Developers</h3>
               <p className="text-zinc-400 mb-4 ">
                 Build interactive coding tutorials or educational platforms
               </p>
@@ -268,12 +268,12 @@ Content-Type: application/json
 
       <section className="container mx-auto py-24 px-4">
         <div className="max-w-3xl mx-auto text-center space-y-8">
-          <h2 className="font-sans text-center mb-12 text-3xl">Ready to Power Your Applications?</h2>
+          <h2 className="font-ps2 text-center mb-12 !text-2xl">Ready to Power Your Applications?</h2>
           <p className=" text-zinc-400">Get started with our sandbox runtime API today</p>
           <div className="pt-6 flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/profile">
               <Button className="bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 pixel-button">
-                <span className="font-sans">Get API Access</span>
+                <span className="font-ps2">Get API Access</span>
               </Button>
             </Link>
             <Link href="https://api.steprun.ai/docs" target="_blank">
@@ -281,7 +281,7 @@ Content-Type: application/json
                 variant="outline"
                 className="border-4 border-zinc-700 text-zinc-300 hover:bg-zinc-800 px-8 py-6 pixel-button"
               >
-                <span className="font-sans">View API Docs</span>
+                <span className="font-ps2">View API Docs</span>
               </Button>
             </Link>
           </div>
@@ -293,7 +293,7 @@ Content-Type: application/json
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-5 w-5 text-emerald-500 pixel-icon" />
-              <span className="font-sans">𑢡teprun.ai</span>
+              <span>𑢡teprun.ai</span>
             </Link>
             <div className="text-zinc-500 ">
               © {new Date().getFullYear()} Steprun.ai. All rights reserved.

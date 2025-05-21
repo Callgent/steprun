@@ -18,6 +18,10 @@
   font-style: normal;
 }
 
+.font-ps2{
+  font-size: 0.8em;
+}
+
 ::placeholder {
   @apply !text-zinc-400 !font-mono;
 }

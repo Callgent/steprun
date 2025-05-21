@@ -39,21 +39,21 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="bg-zinc-900 mt-10 text-zinc-100 text-base flex items-center justify-center p-4 pixel-grid font-sans">
+    <div className="bg-zinc-900 mt-10 text-zinc-100 text-base flex items-center justify-center p-4 pixel-grid font-ps2">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
         <CardHeader className="space-y-1">
           <div className="flex justify-center mb-6">
             <Link href="/" className="flex items-center gap-2">
               <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-              <span className=" text-2xl ">Steprun.ai</span>
+              <span className="text-xl ">Steprun.ai</span>
             </Link>
           </div>
-          <CardTitle className="text-2xl text-center ">Create Account</CardTitle>
+          <CardTitle className="text-lg text-center ">Create Account</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="username" className="">
+              <Label htmlFor="username" className="text-base">
                 Username
               </Label>
               <Input
@@ -66,7 +66,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email" className="">
+              <Label htmlFor="email" className="text-base">
                 Email
               </Label>
               <Input
@@ -80,7 +80,7 @@ export default function RegisterPage() {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password" className="">
+              <Label htmlFor="password" className="text-base">
                 Password
               </Label>
               <div className="relative">
@@ -106,7 +106,7 @@ export default function RegisterPage() {
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword" className="">
+              <Label htmlFor="confirmPassword" className="text-base">
                 Confirm Password
               </Label>
               <Input
@@ -128,7 +128,7 @@ export default function RegisterPage() {
 
             <Button
               type="submit"
-              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 pixel-button"
+              className="w-full bg-emerald-600 hover:bg-emerald-700 text-white mt-6 pixel-button text-base"
               disabled={isLoading}
             >
               {isLoading ? "Registering..." : "Register"}
@@ -136,7 +136,7 @@ export default function RegisterPage() {
           </form>
         </CardContent>
         <CardFooter>
-          <div className="text-center w-full  text-zinc-400 ">
+          <div className="text-center w-full  text-zinc-400 text-xs">
             Already have an account?{" "}
             <Link href="/login" className="hover:text-emerald-500 underline underline-offset-4">
               Sign In
