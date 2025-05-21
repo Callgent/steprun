@@ -1,10 +1,9 @@
 services:
   app:
-    build: .
+    build: ./backend
     container_name: api.steprun.ai
     networks:
       - steprun_private
-      - default
     env_file:
       - ${APP_ENV_FILE:-.env.prod}
     user: root
@@ -16,10 +15,20 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
       - sandboxes:/sandboxes
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     depends_on:
       - pg
+
+  frontend:
+    build: ./frontend
+    container_name: steprun.ai
+    expose:
+      - "3000"
+    networks:
+      - steprun_network
+    environment:
+      - NODE_ENV=production
 
   pg:
     image: bitnami/postgresql:15
@@ -34,21 +43,25 @@ services:
       POSTGRESQL_PG_NETWORK_MASK: 172.0.0.0/8
     volumes:
       - postgres_data:/bitnami/postgresql
-    # ports:
-    #   - "5432:5432"
+    expose:
+      - "5432"
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./backend/docker/nginx.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - app
+      - frontend
+    networks:
+      - steprun_private
 
 volumes:
   sandboxes:
-    # driver: local
-    # driver_opts:
-    #   o: bind
-    #   type: none
-    #   device: /mydata/steprun/sandboxes
   postgres_data:
 
 networks:
   steprun_private:
-    driver: bridge
-    internal: true
-  default:
     driver: bridge
