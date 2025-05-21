@@ -35,7 +35,7 @@ import DemoPage from "../sessions/page"
 import Link from "next/link"
 
 export default function ProfilePage() {
-    const { user, apiKeys, isLoading, error, addApiKey, deleteApiKey } = useAuthStore()
+    const { user, apiKeys, isLoading, logout, addApiKey, deleteApiKey } = useAuthStore()
     const router = useRouter()
     const [newKeyName, setNewKeyName] = useState("")
     const [copied, setCopied] = useState<string | null>(null)
@@ -79,11 +79,11 @@ export default function ProfilePage() {
         )
     }
 
-    const logout = () => {
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('auth-storage');
+    const logOut = () => {
+        logout()
         router.push('/')
     }
+
     return (
         <div className="container mx-auto py-8">
             <div className="mx-auto">
@@ -268,7 +268,7 @@ export default function ProfilePage() {
                 <Button
                     variant="ghost"
                     className="border-4 border-zinc-700 text-zinc-300 hover:bg-zinc-800 pixel-button"
-                    onClick={logout}
+                    onClick={logOut}
                 >
                     <LogOut className="h-4 w-4 mr-2 pixel-icon" />
                     <span className="font-ps2">Sign Out</span>

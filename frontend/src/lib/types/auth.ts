@@ -12,6 +12,7 @@ export interface AuthStore {
   clearError: () => void
   recovery: (email: string) => Promise<boolean | string>
   resetPassword: (token: string, new_password: string) => Promise<boolean | string>
+  logout: () => void
 }
 
 export interface User {

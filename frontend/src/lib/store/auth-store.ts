@@ -148,7 +148,10 @@ export const useAuthStore = create<AuthStore>()(
           set({ isLoading: false })
         }
       },
-
+      logout: () => {
+        set({ user: null, apiKeys: [] })
+        localStorage.removeItem('auth_token');
+      },
       // Clear error
       clearError: () => {
         set({ error: null })
