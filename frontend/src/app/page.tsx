@@ -25,7 +25,7 @@ export default function Home() {
         </div>
       </section>
 
-      <div className="fixed top-56 right-36 opacity-50 z-1">
+      <div className="fixed top-56 right-36 opacity-50 z-1 hidden md:block">
         <PixelCode />
       </div>
 

@@ -23,9 +23,9 @@ export function Header() {
   return (
     <>
       <header className="container mx-auto py-4 px-2 flex justify-between items-center border-b-4 border-zinc-800 relative z-10 ">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity font-rounded text-xl md:text-2xl xl:text-3xl w-1/3">
+        <Link href="/" className="md:flex items-center gap-2 hover:opacity-80 transition-opacity font-rounded text-xl md:text-2xl xl:text-3xl w-1/3">
           <Terminal className="h-6 w-6 text-emerald-500 pixel-icon" />
-          𑢡teprun.ai
+          <span className="hidden md:block">𑢡teprun.ai</span>
         </Link>
         <div className="flex items-center gap-4 font-ps2 w-1/3 justify-center">
           <Link href="https://api.steprun.ai/docs" className="hover:text-emerald-500 hidden md:block" target="_blank">
@@ -36,10 +36,10 @@ export function Header() {
           </Link>
         </div>
         <div className="flex justify-end gap-4 items-center font-ps2 w-1/3">
-          <Link href="https://api.steprun.ai/docs" className="hover:text-emerald-500 block md:hidden" target="_blank">
+          <Link href="https://api.steprun.ai/docs" className="hover:text-emerald-500 block md:hidden text-xs md:text-lg" target="_blank">
             Docs
           </Link>
-          <Link href="/#features" className="hover:text-emerald-500 block md:hidden">
+          <Link href="/#features" className="hover:text-emerald-500 block md:hidden text-xs md:text-lg">
             Features
           </Link>
           {user ? (
