@@ -5,10 +5,31 @@ services:
       - ${APP_ENV_FILE:-.env.prod}
     container_name: api.steprun.ai
     user: root
+    environment:
+      POSTGRES_SERVER: pg
+      POSTGRES_PORT: 5432
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-steprun}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     volumes:
       - sandboxes:/sandboxes
     ports:
       - "8000:8000"
+    depends_on:
+      - pg
+
+  pg:
+    image: bitnami/postgresql:15
+    container_name: postgres.steprun.ai
+    environment:
+      # POSTGRESQL_POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_USERNAME: ${POSTGRES_USER:-postgres}
+      POSTGRESQL_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRESQL_DATABASE: ${POSTGRES_DB:-steprun}
+    volumes:
+      - postgres_data:/bitnami/postgresql
+    ports:
+      - "5432:5432"
 
 volumes:
   sandboxes:
@@ -17,3 +38,4 @@ volumes:
     #   o: bind
     #   type: none
     #   device: /mydata/steprun/sandboxes
+  postgres_data:
