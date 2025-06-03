@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Terminal } from "lucide-react"
@@ -62,7 +62,12 @@ export default function ForgotPassword() {
       setIsSubmitting(false)
     }
   }
-
+  useEffect(() => {
+    const paramsToken = searchParams.get("token")
+    if (paramsToken) {
+      setToken(paramsToken)
+    }
+  }, [])
   return (
     <div className="bg-zinc-900 text-zinc-100 flex items-center justify-center p-4 pixel-grid font-ps2">
       <Card className="w-full max-w-md bg-zinc-800 border-4 border-zinc-700 rounded-none pixel-container">
