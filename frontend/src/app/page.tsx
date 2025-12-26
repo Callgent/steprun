@@ -10,6 +10,7 @@ export default function Home() {
         <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
           <h1 className="text-5xl md:text-6xl font-rounded">
             <div>Run a Step then Generate</div>
+            <div>Next</div>
             <div className="text-emerald-500 text-2xl mt-4">CoT for code</div>
           </h1>
           <p className="max-w-md md:max-w-xl xl:max-w-3xl mx-auto text-zinc-400 font-ps2 text-xl">
